@@ -1,73 +1,23 @@
 package com.parkingsolutions.parkify.document;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("users")
-public class User {
-    @Id
-    private String id;
+@Document("user")
+public class User extends BaseUser{
 
-    private String name;
-    private String surname;
-    private String email;
-    private String password;
-    private int thankYou;
+    private int rank;
 
-    public User(String name, String surname, String email, String password, int thankYou) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.password = password;
-        this.thankYou = thankYou;
+    public User(String name, String surname, String email, String password, int rank) {
+        super(name, surname, email, password);
+        this.rank = rank;
     }
 
-    public String getId() {
-        return id;
+    public int getRank() {
+        return rank;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getThankYou() {
-        return thankYou;
-    }
-
-    public void setThankYou(int thankYou) {
-        this.thankYou = thankYou;
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
 }
