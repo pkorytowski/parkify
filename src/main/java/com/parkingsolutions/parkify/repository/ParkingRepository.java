@@ -11,7 +11,8 @@ public interface ParkingRepository extends MongoRepository<Parking, String> {
     List<Parking> findAll();
     List<Parking> findAllByOwnerId(String ownerId);
     Parking findFirstById(String id);
-    Parking findAllByCity(String city);
+    List<Parking> findAllByCity(String city);
     Parking insert(Parking parking);
     Parking save(Parking parking);
+    void deleteById(String id);
 }

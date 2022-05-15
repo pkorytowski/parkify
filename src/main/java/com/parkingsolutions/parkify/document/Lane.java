@@ -1,38 +1,22 @@
 package com.parkingsolutions.parkify.document;
 
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("lane")
-public class Lane {
-    @Id
-    private String id;
+import java.io.Serializable;
 
-    private String parkingId;
+@Document
+public class Lane implements Serializable {
     private String name;
     private int size;
 
-
-    public Lane(String parkingId, String name, int size) {
-        this.parkingId = parkingId;
+    @JsonCreator
+    public Lane(@JsonProperty("name") String name,
+                @JsonProperty("size") int size) {
         this.name = name;
         this.size = size;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getParkingId() {
-        return parkingId;
-    }
-
-    public void setParkingId(String parkingId) {
-        this.parkingId = parkingId;
     }
 
     public String getName() {

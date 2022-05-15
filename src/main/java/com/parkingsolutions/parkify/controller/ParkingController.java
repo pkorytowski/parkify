@@ -1,5 +1,6 @@
 package com.parkingsolutions.parkify.controller;
 
+import com.parkingsolutions.parkify.bean.AvailableSpot;
 import com.parkingsolutions.parkify.document.Parking;
 import com.parkingsolutions.parkify.service.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +35,27 @@ public class ParkingController {
         return ps.add(parking);
     }
 
-    @GetMapping
-    public Parking getOne(@RequestParam(name = "id", required = false) String id,
-                          @RequestParam(name = "city", required = false) String city) {
+    @GetMapping("/{id}")
+    public Parking getOneById(@PathVariable String id) {
         if (id != null) {
             return ps.getOneById(id);
-        } else if (city != null) {
-            return ps.getOneByCity(city);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteOneById(@PathVariable String id) {
+        ps.deleteOneById(id);
+    }
+
+    @GetMapping("/city/{city}")
+    public List<Parking> getAllByCity(@PathVariable String city) {
+        return ps.getAllByCity(city);
+    }
+
+    @GetMapping("/city/{city}/free")
+    public List<AvailableSpot> getFreeByCity(@PathVariable String city) {
+        return ps.getFreeByCity(city);
     }
 }
