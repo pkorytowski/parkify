@@ -1,7 +1,11 @@
 package com.parkingsolutions.parkify.document;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document("parking")
 public class Parking {
@@ -15,8 +19,18 @@ public class Parking {
     private String number;
     private String postalcode;
     private String country;
+    private List<Lane> lanes;
 
-    public Parking(String ownerId, String name, String city, String street, String number, String postalcode, String country) {
+    public Parking() {}
+
+    @JsonCreator
+    public Parking(@JsonProperty("ownerid") String ownerId,
+                   @JsonProperty("name") String name,
+                   @JsonProperty("city") String city,
+                   @JsonProperty("street") String street,
+                   @JsonProperty("number") String number,
+                   @JsonProperty("postalcode") String postalcode,
+                   @JsonProperty("country") String country) {
         this.ownerId = ownerId;
         this.name = name;
         this.city = city;

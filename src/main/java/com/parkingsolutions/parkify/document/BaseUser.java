@@ -12,6 +12,8 @@ public class BaseUser {
     private String email;
     private String password;
 
+    public BaseUser() {}
+
     public BaseUser(String name, String surname, String email, String password) {
         this.name = name;
         this.surname = surname;

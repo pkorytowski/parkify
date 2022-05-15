@@ -8,13 +8,13 @@ public class Lane {
     @Id
     private String id;
 
-    private String parkingID;
+    private String parkingId;
     private String name;
     private int size;
 
 
-    public Lane(String parkingID, String name, int size) {
-        this.parkingID = parkingID;
+    public Lane(String parkingId, String name, int size) {
+        this.parkingId = parkingId;
         this.name = name;
         this.size = size;
     }
@@ -27,12 +27,12 @@ public class Lane {
         this.id = id;
     }
 
-    public String getParkingID() {
-        return parkingID;
+    public String getParkingId() {
+        return parkingId;
     }
 
-    public void setParkingID(String parkingID) {
-        this.parkingID = parkingID;
+    public void setParkingId(String parkingId) {
+        this.parkingId = parkingId;
     }
 
     public String getName() {
