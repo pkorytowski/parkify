@@ -10,8 +10,9 @@ import java.util.List;
 public interface ParkingRepository extends MongoRepository<Parking, String> {
     List<Parking> findAll();
     List<Parking> findAllByOwnerId(String ownerId);
-    Parking findFirstById(String id);
     List<Parking> findAllByCity(String city);
+    List<Parking> findAllByCityAndAvailableSpotsIsGreaterThan(String city, int number);
+    Parking findFirstById(String id);
     Parking insert(Parking parking);
     Parking save(Parking parking);
     void deleteById(String id);

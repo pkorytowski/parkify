@@ -1,6 +1,5 @@
 package com.parkingsolutions.parkify.controller;
 
-import com.parkingsolutions.parkify.bean.AvailableSpot;
 import com.parkingsolutions.parkify.document.Parking;
 import com.parkingsolutions.parkify.service.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +54,7 @@ public class ParkingController {
     }
 
     @GetMapping("/city/{city}/free")
-    public List<AvailableSpot> getFreeByCity(@PathVariable String city) {
+    public List<Parking> getFreeByCity(@PathVariable String city) {
         return ps.getFreeByCity(city);
     }
 }

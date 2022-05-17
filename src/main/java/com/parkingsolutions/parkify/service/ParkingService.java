@@ -1,6 +1,5 @@
 package com.parkingsolutions.parkify.service;
 
-import com.parkingsolutions.parkify.bean.AvailableSpot;
 import com.parkingsolutions.parkify.document.Lane;
 import com.parkingsolutions.parkify.document.Parking;
 import com.parkingsolutions.parkify.repository.ParkingRepository;
@@ -54,10 +53,10 @@ public class ParkingService {
         pr.deleteById(id);
     }
 
-    public List<AvailableSpot> getFreeByCity(String city) {
-        List<Parking> parkings = pr.findAllByCity(city);
+    public List<Parking> getFreeByCity(String city) {
 
-        return null;
+        return pr.findAllByCityAndAvailableSpotsIsGreaterThan(city,0);
+
     }
 
 }

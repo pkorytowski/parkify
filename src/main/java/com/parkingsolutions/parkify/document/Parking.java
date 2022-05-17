@@ -5,8 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Document("parking")
 public class Parking {
@@ -20,6 +24,8 @@ public class Parking {
     private String number;
     private String postalcode;
     private String country;
+    private int size;
+    private int availableSpots;
     private List<Lane> lanes;
 
     public Parking() {}
@@ -40,7 +46,7 @@ public class Parking {
         this.number = number;
         this.postalcode = postalcode;
         this.country = country;
-        this.lanes = lanes;
+        setLanes(lanes);
     }
 
     public String getId() {
@@ -113,5 +119,61 @@ public class Parking {
 
     public void setLanes(List<Lane> lanes) {
         this.lanes = lanes;
+        size = 0;
+        availableSpots = 0;
+        Set<String> laneNames = new HashSet<>();
+        for (Lane lane: this.lanes) {
+            size += lane.getSize();
+            availableSpots += lane.getAvailableSpots();
+            laneNames.add(lane.getName());
+        }
+        if (laneNames.size() != this.lanes.size()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Lane name be unique within parking");
+        }
+    }
+
+    public boolean reserveSpot(String laneName) {
+        if (availableSpots <= 0) {
+            return false;
+        }
+        for (Lane lane: lanes) {
+            if (lane.getName().equals(laneName)) {
+                if (lane.getAvailableSpots() <= 0) {
+                    return false;
+                } else {
+                    lane.setAvailableSpots(lane.getAvailableSpots()-1);
+                    availableSpots--;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean freeSpot(String laneName) {
+        for (Lane lane: lanes) {
+            if (lane.getName().equals(laneName)) {
+                availableSpots++;
+                lane.setAvailableSpots(lane.getAvailableSpots()+1);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getAvailableSpots() {
+        return availableSpots;
+    }
+
+    public void setAvailableSpots(int availableSpots) {
+        this.availableSpots = availableSpots;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

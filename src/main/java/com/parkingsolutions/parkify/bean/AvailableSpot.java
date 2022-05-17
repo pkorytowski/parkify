@@ -1,13 +1,11 @@
 package com.parkingsolutions.parkify.bean;
 
 public class AvailableSpot {
-    private String parkingId;
-    private String lane;
+    private String laneId;
     private int availableSpots;
 
-    public AvailableSpot(String parkingId, String lane, int availableSpots) {
-        this.parkingId = parkingId;
-        this.lane = lane;
+    public AvailableSpot(String laneId, int availableSpots) {
+        this.laneId = laneId;
         this.availableSpots = availableSpots;
     }
 
@@ -19,19 +17,12 @@ public class AvailableSpot {
         this.availableSpots = availableSpots;
     }
 
-    public String getLane() {
-        return lane;
+    public String getLaneId() {
+        return laneId;
     }
 
-    public void setLane(String lane) {
-        this.lane = lane;
+    public void setLaneId(String laneId) {
+        this.laneId = laneId;
     }
 
-    public String getParkingId() {
-        return parkingId;
-    }
-
-    public void setParkingId(String parkingId) {
-        this.parkingId = parkingId;
-    }
 }
