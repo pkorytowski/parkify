@@ -35,7 +35,7 @@ public class ReservationController {
 
     @PutMapping
     public Reservation update(@RequestBody Reservation reservation) {
-        return rs.insert(reservation);
+        return rs.updateReservation(reservation);
     }
 
 

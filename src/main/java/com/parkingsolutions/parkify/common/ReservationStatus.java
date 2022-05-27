@@ -1,4 +1,4 @@
-package com.parkingsolutions.parkify.constants;
+package com.parkingsolutions.parkify.common;
 
 public enum ReservationStatus {
     RESERVED,

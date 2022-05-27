@@ -1,6 +1,6 @@
 package com.parkingsolutions.parkify.document;
 
-import com.parkingsolutions.parkify.constants.ReservationStatus;
+import com.parkingsolutions.parkify.common.ReservationStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

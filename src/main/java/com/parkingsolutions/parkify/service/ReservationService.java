@@ -1,5 +1,6 @@
 package com.parkingsolutions.parkify.service;
 
+import com.parkingsolutions.parkify.common.ReservationStatus;
 import com.parkingsolutions.parkify.document.Parking;
 import com.parkingsolutions.parkify.document.Reservation;
 import com.parkingsolutions.parkify.repository.ParkingRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -42,6 +44,10 @@ public class ReservationService {
     @Transactional
     public Reservation save(Reservation reservation) {
         Parking parking = pr.findFirstById(reservation.getParkingId());
+        if (reservation.getReservationStatus() == null) {
+            reservation.setReservationStatus(ReservationStatus.RESERVED);
+            reservation.setReservationStart(LocalDateTime.now());
+        }
         boolean result = parking.reserveSpot(reservation.getLaneName());
         if (!result) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Cannot reserve this spot");
@@ -54,26 +60,67 @@ public class ReservationService {
     public Reservation updateReservation(Reservation reservation) {
         Reservation reservationOld = rp.findFirstById(reservation.getId());
         if (!reservationOld.getParkingId().equals(reservation.getParkingId())) {
-            Parking result = changeParking(reservationOld, reservation);
-            if (result == null) {
+            try {
+                reservationOld = changeParking(reservationOld, reservation);
+            } catch (IllegalArgumentException e) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot change parking");
             }
+        } else if (reservationOld.getParkingId().equals(reservation.getParkingId()) &&
+            !reservationOld.getLaneName().equals(reservation.getLaneName())) {
+            try {
+                reservationOld = changeLane(reservationOld, reservation);
+            } catch (IllegalArgumentException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot change lane on the spot");
+            }
         }
-        if (!reservationOld.getReservationStatus().equals(reservation.getReservationStatus())) {
 
+        if (!reservationOld.getReservationStatus().equals(reservation.getReservationStatus())) {
+            try {
+                reservationOld = changeReservationStatus(reservationOld, reservation);
+            } catch (IllegalArgumentException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot change reservation");
+            }
         }
+        return reservationOld;
     }
 
-    //todo return pair of parkings
-    private Parking changeParking(Reservation reservationOld, Reservation reservationNew) {
+    @Transactional
+    Reservation changeLane(Reservation reservationOld, Reservation reservationNew) {
+        Parking parking = pr.findFirstById(reservationNew.getParkingId());
+        parking.freeSpot(reservationOld.getLaneName());
+        parking.reserveSpot(reservationNew.getLaneName());
+        pr.save(parking);
+        return rp.save(reservationNew);
+    }
+
+    @Transactional
+    Reservation changeParking(Reservation reservationOld, Reservation reservationNew) {
         Parking parkingNew = pr.findFirstById(reservationNew.getParkingId());
         Parking parkingOld = pr.findFirstById(reservationOld.getParkingId());
         boolean result1 = parkingNew.reserveSpot(reservationNew.getLaneName());
         boolean result2 = parkingOld.freeSpot(reservationOld.getLaneName());
+
         if (!result1 || !result2) {
             return null;
         }
-        return parkingNew;
+        pr.save(parkingNew);
+        pr.save(parkingOld);
+        return rp.save(reservationNew);
+    }
+
+    private Reservation changeReservationStatus(Reservation reservationOld, Reservation reservationNew) {
+        LocalDateTime date = LocalDateTime.now();
+        if (reservationOld.getReservationStatus().equals(ReservationStatus.RESERVED) &&
+                reservationNew.getReservationStatus().equals(ReservationStatus.OCCUPIED)) {
+            reservationNew.setReservationEnd(date);
+            reservationNew.setOccupationStart(date);
+        } else if (reservationOld.getReservationStatus().equals(ReservationStatus.OCCUPIED) &&
+        reservationNew.getReservationStatus().equals(ReservationStatus.ENDED)) {
+            reservationNew.setOccupationEnd(date);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Illegal state change");
+        }
+        return rp.save(reservationNew);
     }
 
 
