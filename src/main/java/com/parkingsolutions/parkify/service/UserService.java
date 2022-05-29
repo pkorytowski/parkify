@@ -36,11 +36,11 @@ public class UserService {
     }
 
     public User getUserById(String id) {
-        return ur.findFirstById(id);
+        return ur.findOneById(id);
     }
 
     public User getUserByEmail(String email) {
-        return ur.findFirstByEmail(email);
+        return ur.findOneByEmail(email);
     }
     
 

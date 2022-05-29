@@ -6,7 +6,6 @@ public class BaseUser {
 
     @Id
     private String id;
-
     private String name;
     private String surname;
     private String email;

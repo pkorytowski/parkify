@@ -11,6 +11,11 @@ public class User extends BaseUser{
 
     public User() {}
 
+    public User(User user) {
+        this(user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getRank());
+        setId(user.getId());
+    }
+
     public User(String name, String surname, String email, String password, int rank) {
         super(name, surname, email, password);
         this.rank = rank;

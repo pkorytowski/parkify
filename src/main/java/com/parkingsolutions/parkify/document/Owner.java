@@ -9,4 +9,8 @@ public class Owner extends BaseUser {
         super(name, surname, email, password);
     }
 
+    public Owner(Owner owner) {
+        this(owner.getName(), owner.getSurname(), owner.getEmail(), owner.getPassword());
+        setId(owner.getId());
+    }
 }

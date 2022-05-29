@@ -36,11 +36,11 @@ public class OwnerService {
     }
 
     public Owner getOwnerById(String id) {
-        return or.findFirstById(id);
+        return or.findOneById(id);
     }
 
     public Owner getOwnerByEmail(String email) {
-        return or.findFirstByEmail(email);
+        return or.findOneByEmail(email);
     }
 
 
