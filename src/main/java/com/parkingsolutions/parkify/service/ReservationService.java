@@ -1,5 +1,6 @@
 package com.parkingsolutions.parkify.service;
 
+import com.parkingsolutions.parkify.bean.ReservationFull;
 import com.parkingsolutions.parkify.common.ReservationStatus;
 import com.parkingsolutions.parkify.document.Parking;
 import com.parkingsolutions.parkify.document.Reservation;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -37,13 +39,23 @@ public class ReservationService {
         return rp.findAllByParkingId(id);
     }
 
+    public List<ReservationFull> getFullReservationsByUserId(String id) {
+        List<Reservation> reservations = getAllByUserId(id);
+        List<ReservationFull> reservationFullList = new ArrayList<>();
+        for (Reservation reservation: reservations) {
+            Parking tmpParking = pr.findOneById(reservation.getParkingId());
+            reservationFullList.add(new ReservationFull(reservation, tmpParking));
+        }
+        return reservationFullList;
+    }
+
     public Reservation getOneById(String id) {
         return rp.findFirstById(id);
     }
 
     @Transactional
     public Reservation save(Reservation reservation) {
-        Parking parking = pr.findFirstById(reservation.getParkingId());
+        Parking parking = pr.findOneById(reservation.getParkingId());
         if (reservation.getReservationStatus() == null) {
             reservation.setReservationStatus(ReservationStatus.RESERVED);
             reservation.setReservationStart(LocalDateTime.now());
@@ -86,7 +98,7 @@ public class ReservationService {
 
     @Transactional
     Reservation changeLane(Reservation reservationOld, Reservation reservationNew) {
-        Parking parking = pr.findFirstById(reservationNew.getParkingId());
+        Parking parking = pr.findOneById(reservationNew.getParkingId());
         parking.freeSpot(reservationOld.getLaneName());
         parking.reserveSpot(reservationNew.getLaneName());
         pr.save(parking);
@@ -95,8 +107,8 @@ public class ReservationService {
 
     @Transactional
     Reservation changeParking(Reservation reservationOld, Reservation reservationNew) {
-        Parking parkingNew = pr.findFirstById(reservationNew.getParkingId());
-        Parking parkingOld = pr.findFirstById(reservationOld.getParkingId());
+        Parking parkingNew = pr.findOneById(reservationNew.getParkingId());
+        Parking parkingOld = pr.findOneById(reservationOld.getParkingId());
         boolean result1 = parkingNew.reserveSpot(reservationNew.getLaneName());
         boolean result2 = parkingOld.freeSpot(reservationOld.getLaneName());
 

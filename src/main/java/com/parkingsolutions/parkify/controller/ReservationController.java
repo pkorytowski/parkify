@@ -1,5 +1,6 @@
 package com.parkingsolutions.parkify.controller;
 
+import com.parkingsolutions.parkify.bean.ReservationFull;
 import com.parkingsolutions.parkify.document.Reservation;
 import com.parkingsolutions.parkify.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,10 @@ public class ReservationController {
         return rs.updateReservation(reservation);
     }
 
-
+    @GetMapping("full")
+    public List<ReservationFull> getFullReservationsByUserId(@RequestParam String id) {
+        return rs.getFullReservationsByUserId(id);
+    }
 
     /*
     @GetMapping("/all/{userId}")

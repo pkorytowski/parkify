@@ -38,7 +38,7 @@ public class ParkingService {
     }
 
     public Parking getOneById(String id) {
-        return pr.findFirstById(id);
+        return pr.findOneById(id);
     }
 
     public List<Parking> getAllByCity(String city) {

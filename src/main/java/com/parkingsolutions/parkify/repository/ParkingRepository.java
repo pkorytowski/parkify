@@ -12,7 +12,7 @@ public interface ParkingRepository extends MongoRepository<Parking, String> {
     List<Parking> findAllByOwnerId(String ownerId);
     List<Parking> findAllByCity(String city);
     List<Parking> findAllByCityAndAvailableSpotsIsGreaterThan(String city, int number);
-    Parking findFirstById(String id);
+    Parking findOneById(String id);
     Parking insert(Parking parking);
     Parking save(Parking parking);
     void deleteById(String id);
