@@ -28,12 +28,17 @@ public class ParkifyApplication {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.cors().and().csrf().disable()
+            http.cors().and().csrf().disable();
+            /*
                     .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/login/*").permitAll()
                     .antMatchers(HttpMethod.POST, "/register/*").permitAll()
+                    .antMatchers(HttpMethod.POST, "/parking/*").permitAll()
+                    .antMatchers(HttpMethod.POST, "/reservation/*").permitAll()
                     .anyRequest().authenticated();
+
+             */
         }
 
         @Bean

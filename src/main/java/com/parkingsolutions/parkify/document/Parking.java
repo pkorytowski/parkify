@@ -3,7 +3,6 @@ package com.parkingsolutions.parkify.document;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,7 +37,7 @@ public class Parking {
                    @JsonProperty("number") String number,
                    @JsonProperty("postalcode") String postalcode,
                    @JsonProperty("country") String country,
-                   @JsonProperty("lanes") List<Lane> lanes){
+                   @JsonProperty("lanes") List<Lane> lanes) {
         this.ownerId = ownerId;
         this.name = name;
         this.city = city;

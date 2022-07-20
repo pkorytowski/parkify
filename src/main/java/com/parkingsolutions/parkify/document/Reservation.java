@@ -1,11 +1,14 @@
 package com.parkingsolutions.parkify.document;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.parkingsolutions.parkify.common.ReservationStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Document("reservation")
 public class Reservation implements Serializable {
@@ -14,10 +17,15 @@ public class Reservation implements Serializable {
     private String userId;
     private String parkingId;
     private String laneName;
+
     private ReservationStatus reservationStatus;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime reservationStart;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime reservationEnd;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime occupationStart;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime occupationEnd;
 
     public Reservation(String userId,

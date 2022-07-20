@@ -3,7 +3,9 @@ package com.parkingsolutions.parkify.controller;
 import com.parkingsolutions.parkify.bean.ReservationFull;
 import com.parkingsolutions.parkify.document.Reservation;
 import com.parkingsolutions.parkify.service.ReservationService;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +14,12 @@ import java.util.List;
 @RequestMapping("reservation")
 public class ReservationController {
     private final ReservationService rs;
+
+    @Value("${secret}")
+    private String SECRET = "mySecretKey";
+
+    @Value("${prefix}")
+    private String PREFIX = "Parkify ";
 
     @Autowired
     public ReservationController(ReservationService rs) {
@@ -40,8 +48,24 @@ public class ReservationController {
     }
 
     @GetMapping("full")
-    public List<ReservationFull> getFullReservationsByUserId(@RequestParam String id) {
-        return rs.getFullReservationsByUserId(id);
+    public List<ReservationFull> getFullReservationsByUserId(@RequestHeader (name = "Authorization") String token) {
+        String user = Jwts.parser()
+                .setSigningKey(SECRET.getBytes())
+                .parseClaimsJws(token.replace(PREFIX, ""))
+                .getBody()
+                .getSubject();
+
+        return rs.getFullReservationsByUserId(user);
+    }
+
+    @GetMapping("active")
+    public List<ReservationFull> getActiveFullReservationByUserId(@RequestHeader (name = "Authorization") String token) {
+        String user = Jwts.parser()
+                .setSigningKey(SECRET.getBytes())
+                .parseClaimsJws(token.replace(PREFIX, ""))
+                .getBody()
+                .getSubject();
+        return rs.getFullReservationsByUserIdAndReservationStatusEqualsActive(user);
     }
 
     /*

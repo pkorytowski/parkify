@@ -35,6 +35,10 @@ public class ReservationService {
         return rp.findAllByUserId(id);
     }
 
+    public List<Reservation> getAllByUserIdAndReservationStatusEquals(String id, ReservationStatus reservationStatus) {
+        return rp.findAllByUserIdAndReservationStatusEquals(id, reservationStatus);
+    }
+
     public List<Reservation> getAllByParkingId(String id) {
         return rp.findAllByParkingId(id);
     }
@@ -49,12 +53,23 @@ public class ReservationService {
         return reservationFullList;
     }
 
+    public List<ReservationFull> getFullReservationsByUserIdAndReservationStatusEqualsActive(String id) {
+        List<Reservation> reservations = getAllByUserIdAndReservationStatusEquals(id, ReservationStatus.RESERVED);
+        List<ReservationFull> reservationFullList = new ArrayList<>();
+        for (Reservation reservation: reservations) {
+            Parking tmpParking = pr.findOneById(reservation.getParkingId());
+            reservationFullList.add(new ReservationFull(reservation, tmpParking));
+        }
+        return reservationFullList;
+    }
+
     public Reservation getOneById(String id) {
         return rp.findFirstById(id);
     }
 
     @Transactional
     public Reservation save(Reservation reservation) {
+        System.out.println(reservation.getParkingId());
         Parking parking = pr.findOneById(reservation.getParkingId());
         if (reservation.getReservationStatus() == null) {
             reservation.setReservationStatus(ReservationStatus.RESERVED);
