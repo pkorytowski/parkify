@@ -15,6 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class ReservationService {
@@ -53,7 +55,7 @@ public class ReservationService {
         return reservationFullList;
     }
 
-    public List<ReservationFull> getFullReservationsByUserIdAndReservationStatusEqualsActive(String id) {
+    public List<ReservationFull> getFullReservationsByUserIdAndReservationStatusEqualsReserved(String id) {
         List<Reservation> reservations = getAllByUserIdAndReservationStatusEquals(id, ReservationStatus.RESERVED);
         List<ReservationFull> reservationFullList = new ArrayList<>();
         for (Reservation reservation: reservations) {
@@ -61,6 +63,24 @@ public class ReservationService {
             reservationFullList.add(new ReservationFull(reservation, tmpParking));
         }
         return reservationFullList;
+    }
+
+    public List<ReservationFull> getFullReservationsByUserIdAndReservationStatusEqualsOccupied(String id) {
+        List<Reservation> reservations = getAllByUserIdAndReservationStatusEquals(id, ReservationStatus.OCCUPIED);
+        List<ReservationFull> reservationFullList = new ArrayList<>();
+        for (Reservation reservation: reservations) {
+            Parking tmpParking = pr.findOneById(reservation.getParkingId());
+            reservationFullList.add(new ReservationFull(reservation, tmpParking));
+        }
+        return reservationFullList;
+    }
+
+    public List<ReservationFull> getActiveFullReservationsByUserId(String id) {
+        List<ReservationFull> reservedReservations = getFullReservationsByUserIdAndReservationStatusEqualsReserved(id);
+        List<ReservationFull> occupiedReservations = getFullReservationsByUserIdAndReservationStatusEqualsOccupied(id);
+        return Stream.of(reservedReservations, occupiedReservations)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
     }
 
     public Reservation getOneById(String id) {
@@ -150,7 +170,16 @@ public class ReservationService {
         return rp.save(reservationNew);
     }
 
-
+    //todo validation
+    public boolean extendReservation(String id, int minutes) {
+        Reservation reservation = rp.findFirstById(id);
+        if (reservation.getOccupationStart() == null) {
+            reservation.setReservationEnd(reservation.getReservationEnd().plusMinutes(minutes));
+            rp.save(reservation);
+            return true;
+        }
+        return false;
+    }
 
 
 

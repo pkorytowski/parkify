@@ -5,20 +5,20 @@ import com.parkingsolutions.parkify.document.Reservation;
 import com.parkingsolutions.parkify.service.ReservationService;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("reservation")
 public class ReservationController {
     private final ReservationService rs;
 
-    @Value("${secret}")
     private String SECRET = "mySecretKey";
-
-    @Value("${prefix}")
     private String PREFIX = "Parkify ";
 
     @Autowired
@@ -65,9 +65,20 @@ public class ReservationController {
                 .parseClaimsJws(token.replace(PREFIX, ""))
                 .getBody()
                 .getSubject();
-        return rs.getFullReservationsByUserIdAndReservationStatusEqualsActive(user);
+        return rs.getActiveFullReservationsByUserId(user);
     }
 
+    @PutMapping("extend")
+    public boolean extendReservation(@RequestBody Map<String, String> request) {
+        String id = request.get("id");
+        int time = Integer.parseInt(request.get("time"));
+
+        boolean result = rs.extendReservation(id, time);
+        if (result) {
+            throw new ResponseStatusException(HttpStatus.OK);
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
     /*
     @GetMapping("/all/{userId}")
     public List<Reservation> getAllByUserId(@PathVariable String userId) {
