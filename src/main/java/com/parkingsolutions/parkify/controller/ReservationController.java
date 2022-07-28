@@ -1,6 +1,7 @@
 package com.parkingsolutions.parkify.controller;
 
 import com.parkingsolutions.parkify.bean.ReservationFull;
+import com.parkingsolutions.parkify.common.ReservationStatus;
 import com.parkingsolutions.parkify.document.Reservation;
 import com.parkingsolutions.parkify.service.ReservationService;
 import io.jsonwebtoken.Jwts;
@@ -78,6 +79,27 @@ public class ReservationController {
             throw new ResponseStatusException(HttpStatus.OK);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("status")
+    public boolean changeStatus(@RequestBody Map<String, String> request) {
+        String id = request.get("id");
+        String statusStr = request.get("status");
+        ReservationStatus status;
+        switch (statusStr) {
+            case "RESERVED":
+                status = ReservationStatus.RESERVED;
+                break;
+            case "OCCUPIED":
+                status = ReservationStatus.OCCUPIED;
+                break;
+            case "ENDED":
+                status = ReservationStatus.ENDED;
+                break;
+            default:
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        return rs.changeReservationStatus(id, status);
     }
     /*
     @GetMapping("/all/{userId}")

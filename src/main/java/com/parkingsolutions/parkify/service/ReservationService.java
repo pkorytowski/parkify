@@ -165,9 +165,17 @@ public class ReservationService {
         reservationNew.getReservationStatus().equals(ReservationStatus.ENDED)) {
             reservationNew.setOccupationEnd(date);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Illegal state change");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Illegal status change");
         }
         return rp.save(reservationNew);
+    }
+
+    public boolean changeReservationStatus(String id, ReservationStatus reservationStatus) {
+        Reservation reservationOld = rp.findFirstById(id);
+        Reservation reservationNew = new Reservation(reservationOld);
+        reservationNew.setReservationStatus(reservationStatus);
+        Reservation result = changeReservationStatus(reservationOld, reservationNew);
+        return result.getReservationStatus().equals(reservationNew.getReservationStatus());
     }
 
     //todo validation
