@@ -96,6 +96,9 @@ public class ReservationController {
             case "ENDED":
                 status = ReservationStatus.ENDED;
                 break;
+            case "CANCELED":
+                status = ReservationStatus.CANCELED;
+                break;
             default:
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }

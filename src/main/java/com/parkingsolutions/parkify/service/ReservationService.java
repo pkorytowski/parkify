@@ -162,8 +162,11 @@ public class ReservationService {
             reservationNew.setReservationEnd(date);
             reservationNew.setOccupationStart(date);
         } else if (reservationOld.getReservationStatus().equals(ReservationStatus.OCCUPIED) &&
-        reservationNew.getReservationStatus().equals(ReservationStatus.ENDED)) {
+                reservationNew.getReservationStatus().equals(ReservationStatus.ENDED)) {
             reservationNew.setOccupationEnd(date);
+        } else if (reservationOld.getReservationStatus().equals(ReservationStatus.RESERVED) &&
+                reservationNew.getReservationStatus().equals(ReservationStatus.CANCELED)) {
+            reservationNew.setReservationEnd(date);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Illegal status change");
         }
