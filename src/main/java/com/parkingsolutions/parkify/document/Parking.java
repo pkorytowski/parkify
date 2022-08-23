@@ -2,7 +2,9 @@ package com.parkingsolutions.parkify.document;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.parkingsolutions.parkify.bean.Location;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,9 +25,9 @@ public class Parking {
     private String number;
     private String postalcode;
     private String country;
+    private Point location;
     private int size;
     private int availableSpots;
-    private List<Lane> lanes;
 
     public Parking() {}
 
@@ -37,7 +39,8 @@ public class Parking {
                    @JsonProperty("number") String number,
                    @JsonProperty("postalcode") String postalcode,
                    @JsonProperty("country") String country,
-                   @JsonProperty("lanes") List<Lane> lanes) {
+                   @JsonProperty("location") Point location,
+                   @JsonProperty("size") int size) {
         this.ownerId = ownerId;
         this.name = name;
         this.city = city;
@@ -45,7 +48,9 @@ public class Parking {
         this.number = number;
         this.postalcode = postalcode;
         this.country = country;
-        setLanes(lanes);
+        this.location = location;
+        this.size = size;
+        this.availableSpots = size;
     }
 
     public String getId() {
@@ -112,50 +117,26 @@ public class Parking {
         this.country = country;
     }
 
-    public List<Lane> getLanes() {
-        return lanes;
+    public Point getLocation() {
+        return location;
     }
 
-    public void setLanes(List<Lane> lanes) {
-        this.lanes = lanes;
-        size = 0;
-        availableSpots = 0;
-        Set<String> laneNames = new HashSet<>();
-        for (Lane lane: this.lanes) {
-            size += lane.getSize();
-            availableSpots += lane.getAvailableSpots();
-            laneNames.add(lane.getName());
-        }
-        if (laneNames.size() != this.lanes.size()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Lane name be unique within parking");
-        }
+    public void setLocation(Point location) {
+        this.location = location;
     }
 
-    public boolean reserveSpot(String laneName) {
+    public boolean reserveSpot() {
         if (availableSpots <= 0) {
             return false;
         }
-        for (Lane lane: lanes) {
-            if (lane.getName().equals(laneName)) {
-                if (lane.getAvailableSpots() <= 0) {
-                    return false;
-                } else {
-                    lane.setAvailableSpots(lane.getAvailableSpots()-1);
-                    availableSpots--;
-                    return true;
-                }
-            }
-        }
-        return false;
+        availableSpots--;
+        return true;
     }
 
-    public boolean freeSpot(String laneName) {
-        for (Lane lane: lanes) {
-            if (lane.getName().equals(laneName)) {
-                availableSpots++;
-                lane.setAvailableSpots(lane.getAvailableSpots()+1);
-                return true;
-            }
+    public boolean freeSpot() {
+        if (availableSpots < size) {
+            availableSpots++;
+            return true;
         }
         return false;
     }

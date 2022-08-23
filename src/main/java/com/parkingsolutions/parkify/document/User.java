@@ -38,4 +38,12 @@ public class User extends BaseUser{
         this.rank = rank;
     }
 
+    public void increaseRank() {
+        rank++;
+    }
+
+    public void decreaseRank() {
+        rank--;
+    }
+
 }

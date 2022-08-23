@@ -28,19 +28,23 @@ public class ReservationController {
     }
 
     @GetMapping("/all")
-    public List<Reservation> getAll(@RequestParam String userId,
-                                    @RequestParam String parkingId) {
-        if (userId != null) {
-            return rs.getAllByUserId(userId);
-        } else if (parkingId != null) {
-            return rs.getAllByParkingId(parkingId);
-        }
-        return rs.getAll();
+    public List<Reservation> getAll(@RequestHeader (name = "Authorization") String token) {
+        String user = Jwts.parser()
+                .setSigningKey(SECRET.getBytes())
+                .parseClaimsJws(token.replace(PREFIX, ""))
+                .getBody()
+                .getSubject();
+        return rs.getAllByUserId(user);
     }
 
     @PostMapping
-    public Reservation add(@RequestBody Reservation reservation) {
-        return rs.save(reservation);
+    public Reservation add(@RequestBody Reservation reservation, @RequestHeader (name = "Authorization") String token) {
+        String user = Jwts.parser()
+                .setSigningKey(SECRET.getBytes())
+                .parseClaimsJws(token.replace(PREFIX, ""))
+                .getBody()
+                .getSubject();
+        return rs.save(reservation, user);
     }
 
     @PutMapping
@@ -69,16 +73,55 @@ public class ReservationController {
         return rs.getActiveFullReservationsByUserId(user);
     }
 
-    @PutMapping("extend")
-    public boolean extendReservation(@RequestBody Map<String, String> request) {
-        String id = request.get("id");
-        int time = Integer.parseInt(request.get("time"));
+    @GetMapping
+    public List<ReservationFull> getReservation(@RequestHeader (name = "Authorization") String token) {
+        String user = Jwts.parser()
+                .setSigningKey(SECRET.getBytes())
+                .parseClaimsJws(token.replace(PREFIX, ""))
+                .getBody()
+                .getSubject();
+        return rs.getOneActiveFullReservationByUserId(user);
+    }
 
-        boolean result = rs.extendReservation(id, time);
-        if (result) {
-            throw new ResponseStatusException(HttpStatus.OK);
+    @PutMapping("extend")
+    public void extendReservation(@RequestBody Map<String, String> request) {
+        String id = request.get("id");
+        if (id != null) {
+            rs.extendReservation(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("occupy")
+    public void occupySpot(@RequestBody Map<String, String> request) {
+        String id = request.get("id");
+        String dateStr = request.get("predictedReservationEnd");
+        if (id != null) {
+           rs.occupySpot(id, dateStr);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("end")
+    public void endReservation(@RequestBody Map<String, String> request) {
+        String id = request.get("id");
+        if (id != null) {
+            rs.endReservation(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("cancel")
+    public void cancelReservation(@RequestBody Map<String, String> request) {
+        String id = request.get("id");
+        if (id != null) {
+            rs.cancelReservation(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("status")
@@ -104,13 +147,5 @@ public class ReservationController {
         }
         return rs.changeReservationStatus(id, status);
     }
-    /*
-    @GetMapping("/all/{userId}")
-    public List<Reservation> getAllByUserId(@PathVariable String userId) {
-        return rs.getAllByUserId(userId);
-    }
-
-    @GetMapping("/all")
-    */
 
 }

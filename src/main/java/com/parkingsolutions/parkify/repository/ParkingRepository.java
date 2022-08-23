@@ -1,6 +1,8 @@
 package com.parkingsolutions.parkify.repository;
 
+import com.parkingsolutions.parkify.bean.Location;
 import com.parkingsolutions.parkify.document.Parking;
+import org.springframework.data.geo.Circle;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +18,6 @@ public interface ParkingRepository extends MongoRepository<Parking, String> {
     Parking insert(Parking parking);
     Parking save(Parking parking);
     void deleteById(String id);
+
+    List<Parking> findAllByLocationIsWithinAndAvailableSpotsIsGreaterThan(Circle location, int number);
 }

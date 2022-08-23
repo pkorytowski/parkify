@@ -16,7 +16,6 @@ public class Reservation implements Serializable {
     private String id;
     private String userId;
     private String parkingId;
-    private String laneName;
 
     private ReservationStatus reservationStatus;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -31,7 +30,6 @@ public class Reservation implements Serializable {
     public Reservation() {}
     public Reservation(String userId,
                        String parkingId,
-                       String laneName,
                        ReservationStatus reservationStatus,
                        LocalDateTime reservationStart,
                        LocalDateTime reservationEnd,
@@ -39,7 +37,6 @@ public class Reservation implements Serializable {
                        LocalDateTime occupationEnd) {
         this.userId = userId;
         this.parkingId = parkingId;
-        this.laneName = laneName;
         this.reservationStatus = reservationStatus;
         this.reservationStart = reservationStart;
         this.reservationEnd = reservationEnd;
@@ -51,7 +48,6 @@ public class Reservation implements Serializable {
         this.id = reservation.id;
         this.userId = reservation.userId;
         this.parkingId = reservation.parkingId;
-        this.laneName = reservation.laneName;
         this.reservationStatus = reservation.reservationStatus;
         this.reservationStart = reservation.reservationStart;
         this.reservationEnd = reservation.reservationEnd;
@@ -81,14 +77,6 @@ public class Reservation implements Serializable {
 
     public void setParkingId(String parkingId) {
         this.parkingId = parkingId;
-    }
-
-    public String getLaneName() {
-        return laneName;
-    }
-
-    public void setLaneName(String laneName) {
-        this.laneName = laneName;
     }
 
     public ReservationStatus getReservationStatus() {

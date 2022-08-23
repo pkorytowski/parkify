@@ -2,6 +2,7 @@ package com.parkingsolutions.parkify.controller;
 
 import com.parkingsolutions.parkify.document.User;
 import com.parkingsolutions.parkify.service.UserService;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,8 @@ public class UserController {
 
     private final UserService us;
 
+    private String SECRET = "mySecretKey";
+    private String PREFIX = "Parkify ";
     @Autowired
     public UserController(UserService us) {
         this.us = us;
@@ -31,15 +34,14 @@ public class UserController {
     }
 
     @GetMapping
-    public @ResponseBody User getOne(@RequestParam(name = "id", required = false) String id,
-                                     @RequestParam(name = "email", required = false) String email) {
-        if (id != null) {
-            return us.getUserById(id);
-        } else if (email != null) {
-            return us.getUserByEmail(email);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+    public @ResponseBody User getOne(@RequestHeader (name = "Authorization") String token) {
+        String user = Jwts.parser()
+                .setSigningKey(SECRET.getBytes())
+                .parseClaimsJws(token.replace(PREFIX, ""))
+                .getBody()
+                .getSubject();
+
+        return us.getUserByEmail(user);
     }
 
 }

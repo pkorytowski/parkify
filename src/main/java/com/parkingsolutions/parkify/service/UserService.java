@@ -32,6 +32,7 @@ public class UserService {
                     HttpStatus.CONFLICT, "User already exist"
             );
         }
+        newUser.setPassword(null);
         return newUser;
     }
 
@@ -40,7 +41,9 @@ public class UserService {
     }
 
     public User getUserByEmail(String email) {
-        return ur.findOneByEmail(email);
+        User user = ur.findOneByEmail(email);
+        user.setPassword(null);
+        return user;
     }
     
 

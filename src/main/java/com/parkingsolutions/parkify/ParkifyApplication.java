@@ -15,6 +15,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @SpringBootApplication
 public class ParkifyApplication {
 
@@ -29,6 +31,8 @@ public class ParkifyApplication {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.cors().and().csrf().disable();
+
+            //http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
             /*
                     .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
@@ -43,8 +47,21 @@ public class ParkifyApplication {
 
         @Bean
         CorsConfigurationSource corsConfigurationSource() {
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                CorsConfiguration corsConfiguration = new CorsConfiguration();
+                corsConfiguration.addAllowedOrigin("*");
+                corsConfiguration.addAllowedHeader("*");
+                corsConfiguration.setAllowedMethods(Arrays.asList(
+                        HttpMethod.GET.name(),
+                        HttpMethod.HEAD.name(),
+                        HttpMethod.POST.name(),
+                        HttpMethod.PUT.name(),
+                        HttpMethod.DELETE.name()));
+                corsConfiguration.setMaxAge(1800L);
+                source.registerCorsConfiguration("/**", corsConfiguration); // you restrict your path here
+
+                //UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            //source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
             return source;
         }
     }

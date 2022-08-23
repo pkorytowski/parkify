@@ -5,6 +5,7 @@ import com.parkingsolutions.parkify.document.Reservation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -17,5 +18,7 @@ public interface ReservationRepository extends MongoRepository<Reservation, Stri
     Reservation findFirstById(String id);
     Reservation insert(Reservation reservation);
     Reservation save(Reservation reservation);
+    List<Reservation> findAllByReservationStatusEqualsAndReservationEndIsBefore(ReservationStatus status,
+                                                                               LocalDateTime date);
 
 }

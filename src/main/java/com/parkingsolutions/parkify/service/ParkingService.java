@@ -4,10 +4,14 @@ import com.parkingsolutions.parkify.document.Lane;
 import com.parkingsolutions.parkify.document.Parking;
 import com.parkingsolutions.parkify.repository.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.Point;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,14 +30,23 @@ public class ParkingService {
         return pr.findAll();
     }
 
+    public Parking addSpecific() {
+        Parking parking = new Parking(
+                "6280d84995e1e9d7f1350141",
+                "Parking nr 2",
+                "Krakow",
+                "Al. Mickiewicza",
+                "22",
+                "22-222",
+                "Poland",
+                new Point(19.914240, 50.066330),
+                10
+        );
+
+        return add(parking);
+    }
+
     public Parking add(Parking parking) {
-        Set<String> laneNames = new HashSet<>();
-        for (Lane lane: parking.getLanes()) {
-            laneNames.add(lane.getName());
-        }
-        if (laneNames.size() != parking.getLanes().size()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Name of lanes must by unique within parking");
-        }
         return pr.insert(parking);
     }
 
@@ -57,6 +70,12 @@ public class ParkingService {
 
         return pr.findAllByCityAndAvailableSpotsIsGreaterThan(city,0);
 
+    }
+
+    public List<Parking> getFreeWithinLocation(double longitude, double latitude, double distance) {
+        //double earthDist = distance/6371;
+        Circle circle = new Circle(longitude, latitude, 5);
+        return pr.findAllByLocationIsWithinAndAvailableSpotsIsGreaterThan(circle, 0);
     }
 
 }

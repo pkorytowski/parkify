@@ -57,4 +57,19 @@ public class ParkingController {
     public List<Parking> getFreeByCity(@PathVariable String city) {
         return ps.getFreeByCity(city);
     }
+
+    @GetMapping("find")
+    public List<Parking> findAllFreeInDistance(@RequestParam("lon") double longitude,
+                                               @RequestParam("lat") double latitude,
+                                               @RequestParam("distance") double distance) {
+
+
+
+        return ps.getFreeWithinLocation(longitude, latitude, distance);
+    }
+
+    @PostMapping("specific")
+    public Parking addSpecific(){
+        return ps.addSpecific();
+    }
 }
