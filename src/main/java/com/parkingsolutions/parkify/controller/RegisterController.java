@@ -1,7 +1,5 @@
 package com.parkingsolutions.parkify.controller;
 
-
-import com.parkingsolutions.parkify.document.Owner;
 import com.parkingsolutions.parkify.document.User;
 import com.parkingsolutions.parkify.service.OwnerService;
 import com.parkingsolutions.parkify.service.UserService;
@@ -11,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Rest controller for register new users
+ */
 @RestController
 @RequestMapping("register")
 public class RegisterController {
@@ -28,8 +29,11 @@ public class RegisterController {
         return us.addUser(user);
     }
 
+    /*
     @PostMapping("owner")
     public Owner registerOwner(@RequestBody Owner owner) {
         return os.addOwner(owner);
     }
+
+     */
 }

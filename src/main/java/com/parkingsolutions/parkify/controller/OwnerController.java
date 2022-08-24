@@ -9,6 +9,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * Rest controller for activities related to owner profile.
+ * Currently, not in use.
+ */
 @RestController()
 @RequestMapping("owner")
 public class OwnerController {

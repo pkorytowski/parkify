@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Rest controller for login activities
+ */
 @RestController
 @RequestMapping("login")
 public class LoginController {

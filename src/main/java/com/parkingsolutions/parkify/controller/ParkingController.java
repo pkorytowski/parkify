@@ -3,12 +3,13 @@ package com.parkingsolutions.parkify.controller;
 import com.parkingsolutions.parkify.document.Parking;
 import com.parkingsolutions.parkify.service.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * Rest controller for CRUD on Parking instances
+ */
 @RestController
 @RequestMapping("parking")
 public class ParkingController {
@@ -24,16 +25,25 @@ public class ParkingController {
         return ps.getAll();
     }
 
+    /*
     @GetMapping("/all/{ownerId}")
     public List<Parking> getAllByOwnerId(@PathVariable String ownerId) {
         return ps.getAllByOwnerId(ownerId);
     }
 
+     */
+
+    /**
+     * Create new parking
+     * @param parking
+     * @return Saved instance
+     */
     @PostMapping
     public Parking add(@RequestBody Parking parking) {
         return ps.add(parking);
     }
 
+    /*
     @GetMapping("/{id}")
     public Parking getOneById(@PathVariable String id) {
         if (id != null) {
@@ -42,6 +52,7 @@ public class ParkingController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @DeleteMapping("/{id}")
     public void deleteOneById(@PathVariable String id) {
@@ -58,6 +69,15 @@ public class ParkingController {
         return ps.getFreeByCity(city);
     }
 
+     */
+
+    /**
+     * Get all Parkings with at least one free spot in given area.
+     * @param longitude geo coordinate
+     * @param latitude geo coordinates
+     * @param distance in kilometres
+     * @return List of parking in given area.
+     */
     @GetMapping("find")
     public List<Parking> findAllFreeInDistance(@RequestParam("lon") double longitude,
                                                @RequestParam("lat") double latitude,

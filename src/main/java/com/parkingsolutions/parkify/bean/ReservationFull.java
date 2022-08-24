@@ -3,6 +3,9 @@ package com.parkingsolutions.parkify.bean;
 import com.parkingsolutions.parkify.document.Parking;
 import com.parkingsolutions.parkify.document.Reservation;
 
+/**
+ * Class that allows return full info about reservation and parking details in one get request
+ */
 public class ReservationFull {
     Reservation reservation;
     Parking parking;

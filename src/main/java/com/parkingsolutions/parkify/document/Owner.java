@@ -2,6 +2,9 @@ package com.parkingsolutions.parkify.document;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Class created for the parkings' owners. Owner functionality non implemented.
+ */
 @Document("owner")
 public class Owner extends BaseUser {
 

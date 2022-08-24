@@ -6,13 +6,10 @@ import com.parkingsolutions.parkify.bean.Location;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+/**
+ * Parking document representation from the database
+ */
 @Document("parking")
 public class Parking {
     @Id

@@ -4,9 +4,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Class for ordinary user without special permission
+ */
 @Document("user")
 public class User extends BaseUser{
 
+    /**
+     * If user ends occupation of parking spot before declared time the rank is increased, otherwise is decreased.
+     */
     private int rank;
 
     public User() {}
@@ -21,6 +27,14 @@ public class User extends BaseUser{
         this.rank = rank;
     }
 
+
+    /**
+     * Constructor used for creating objects from JSON (e.g. from client app).
+     * @param name name of the user
+     * @param  surname of the user
+     * @param email must be unique wthin database
+     * @param password minimum 8 letters
+     */
     @JsonCreator
     public User(@JsonProperty("name") String name,
                 @JsonProperty("surname") String surname,

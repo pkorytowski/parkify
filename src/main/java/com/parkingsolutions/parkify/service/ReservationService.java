@@ -48,10 +48,11 @@ public class ReservationService {
         return rp.findAllByUserIdAndReservationStatusEquals(id, reservationStatus);
     }
 
+    /*
     public List<Reservation> getAllByParkingId(String id) {
         return rp.findAllByParkingId(id);
     }
-
+*/
     public List<ReservationFull> getFullReservationsByUserId(String id) {
         List<Reservation> reservations = getAllByUserId(id);
         List<ReservationFull> reservationFullList = new ArrayList<>();
@@ -100,11 +101,11 @@ public class ReservationService {
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
-
+/*
     public Reservation getOneById(String id) {
         return rp.findFirstById(id);
     }
-
+*/
     @Transactional
     public Reservation save(Reservation reservation, String id) {
         List<Reservation> alreadyReserved = rp.findAllByUserIdAndReservationStatusEquals(id, ReservationStatus.RESERVED);
@@ -129,7 +130,7 @@ public class ReservationService {
         pr.save(parking);
         return rp.save(reservation);
     }
-
+/*
     @Transactional
     public Reservation updateReservation(Reservation reservation) {
         Reservation reservationOld = rp.findFirstById(reservation.getId());
@@ -166,6 +167,8 @@ public class ReservationService {
         pr.save(parkingOld);
         return rp.save(reservationNew);
     }
+
+ */
 
     private Reservation changeReservationStatus(Reservation reservationOld, Reservation reservationNew) {
         LocalDateTime date = LocalDateTime.now();

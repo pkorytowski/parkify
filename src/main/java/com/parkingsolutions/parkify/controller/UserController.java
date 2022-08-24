@@ -23,11 +23,6 @@ public class UserController {
         this.us = us;
     }
 
-    @GetMapping("/all")
-    public @ResponseBody List<User> getAll() {
-        return us.getUsers();
-    }
-
     @PostMapping
     public User addUser(@RequestBody User user) {
         return us.addUser(user);

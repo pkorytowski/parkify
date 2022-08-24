@@ -2,6 +2,9 @@ package com.parkingsolutions.parkify.document;
 
 import org.springframework.data.annotation.Id;
 
+/**
+ * Base class for different types of users
+ */
 public class BaseUser {
 
     @Id

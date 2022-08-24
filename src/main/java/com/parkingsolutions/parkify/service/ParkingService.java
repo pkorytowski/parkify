@@ -1,20 +1,13 @@
 package com.parkingsolutions.parkify.service;
 
-import com.parkingsolutions.parkify.document.Lane;
 import com.parkingsolutions.parkify.document.Parking;
 import com.parkingsolutions.parkify.repository.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Circle;
 import org.springframework.data.geo.Point;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class ParkingService {
@@ -49,7 +42,7 @@ public class ParkingService {
     public Parking add(Parking parking) {
         return pr.insert(parking);
     }
-
+/*
     public Parking getOneById(String id) {
         return pr.findOneById(id);
     }
@@ -71,7 +64,7 @@ public class ParkingService {
         return pr.findAllByCityAndAvailableSpotsIsGreaterThan(city,0);
 
     }
-
+*/
     public List<Parking> getFreeWithinLocation(double longitude, double latitude, double distance) {
         //double earthDist = distance/6371;
         Circle circle = new Circle(longitude, latitude, 5);

@@ -8,12 +8,14 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Rest controller for CRUD operations on Reservation instances
+ */
 @RestController
 @RequestMapping("reservation")
 public class ReservationController {
@@ -26,7 +28,7 @@ public class ReservationController {
     public ReservationController(ReservationService rs) {
         this.rs = rs;
     }
-
+/*
     @GetMapping("/all")
     public List<Reservation> getAll(@RequestHeader (name = "Authorization") String token) {
         String user = Jwts.parser()
@@ -36,7 +38,14 @@ public class ReservationController {
                 .getSubject();
         return rs.getAllByUserId(user);
     }
+*/
 
+    /**
+     * Create new reservation
+     * @param reservation with details parkingId, userId, reservationDate
+     * @param token included in Authorization header
+     * @return Saved reservation instance
+     */
     @PostMapping
     public Reservation add(@RequestBody Reservation reservation, @RequestHeader (name = "Authorization") String token) {
         String user = Jwts.parser()
@@ -47,11 +56,20 @@ public class ReservationController {
         return rs.save(reservation, user);
     }
 
+    /*
     @PutMapping
     public Reservation update(@RequestBody Reservation reservation) {
         return rs.updateReservation(reservation);
     }
 
+     */
+
+    /**
+     * Get all reservation with full information for given user
+     * @param token authorization token
+     * @return List of ReservationFull
+     * @see ReservationFull
+     */
     @GetMapping("full")
     public List<ReservationFull> getFullReservationsByUserId(@RequestHeader (name = "Authorization") String token) {
         String user = Jwts.parser()
@@ -63,6 +81,11 @@ public class ReservationController {
         return rs.getFullReservationsByUserId(user);
     }
 
+    /**
+     * Get active reservation for user. It is possible to have only one active reservation at the time. It is a workaround for client app
+     * @param token authorization token
+     * @return Empty list when there is no active reservations. List with length otherwise
+     */
     @GetMapping("active")
     public List<ReservationFull> getActiveFullReservationByUserId(@RequestHeader (name = "Authorization") String token) {
         String user = Jwts.parser()
@@ -73,6 +96,7 @@ public class ReservationController {
         return rs.getActiveFullReservationsByUserId(user);
     }
 
+    /*
     @GetMapping
     public List<ReservationFull> getReservation(@RequestHeader (name = "Authorization") String token) {
         String user = Jwts.parser()
@@ -83,6 +107,12 @@ public class ReservationController {
         return rs.getOneActiveFullReservationByUserId(user);
     }
 
+     */
+
+    /**
+     * Extend reservation
+     * @param request
+     */
     @PutMapping("extend")
     public void extendReservation(@RequestBody Map<String, String> request) {
         String id = request.get("id");

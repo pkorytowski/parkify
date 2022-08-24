@@ -6,8 +6,14 @@ import com.parkingsolutions.parkify.document.User;
 
 import java.io.Serializable;
 
+/**
+ * Class used for sending user data to client app
+ */
 public class AuthorizedUser extends User implements Serializable {
 
+    /**
+     * The JWT token
+     */
     private String token;
 
     @JsonCreator

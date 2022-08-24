@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Spring data Mongo Repository for Owner collection.
+ */
 @Repository
 public interface OwnerRepository extends MongoRepository<Owner, String> {
     List<Owner> findAll();
