@@ -9,6 +9,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * Class that implements logic for owner operations
+ */
 @Component
 public class OwnerService {
 
@@ -19,10 +22,20 @@ public class OwnerService {
         this.or = or;
     }
 
+    /**
+     * Get all owners
+     * @return list of all owners in db
+     * @see Owner
+     */
     public List<Owner> getOwners() {
         return or.findAll();
     }
 
+    /**
+     * Add new owner with distinct email
+     * @param owner
+     * @return Owner instance if created
+     */
     public Owner addOwner(Owner owner) {
         Owner newOwner;
         try {
@@ -35,10 +48,22 @@ public class OwnerService {
         return newOwner;
     }
 
+    /**
+     * Get owner by id
+     * @param id
+     * @return Owner is exists
+     * @see Owner
+     */
     public Owner getOwnerById(String id) {
         return or.findOneById(id);
     }
 
+    /**
+     * Get owner by email
+     * @param email
+     * @return Owner if exists
+     * @see Owner
+     */
     public Owner getOwnerByEmail(String email) {
         return or.findOneByEmail(email);
     }

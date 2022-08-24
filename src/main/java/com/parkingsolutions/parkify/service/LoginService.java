@@ -20,6 +20,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class that handles login operations and JWT generation
+ */
 @Component
 public class LoginService {
 
@@ -32,6 +35,13 @@ public class LoginService {
         this.or = or;
     }
 
+    /**
+     * Login user
+     * @param email
+     * @param password
+     * @return Instance of authorized user
+     * @see AuthorizedUser
+     */
     public AuthorizedUser loginUser(String email, String password) {
         System.out.println(email);
         User user = ur.findOneByEmail(email);
@@ -44,10 +54,17 @@ public class LoginService {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not exist");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User does not exist");
         }
     }
 
+    /**
+     * Login owner
+     * @param email
+     * @param password
+     * @return Instance of authorized user
+     * @see AuthorizedUser
+     */
     public AuthorizedOwner loginOwner(String email, String password) {
         Owner owner = or.findOneByEmail(email);
         if (owner != null) {
@@ -63,6 +80,12 @@ public class LoginService {
         }
     }
 
+    /**
+     * Generate JWT token for given username and role
+     * @param username
+     * @param role
+     * @return JWT token
+     */
     private String getJWTToken(String username, String role) {
         String secretKey = "mySecretKey";
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils

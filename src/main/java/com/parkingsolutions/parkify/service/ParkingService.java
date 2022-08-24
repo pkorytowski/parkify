@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Class that implements logic for Parking operations
+ */
 @Component
 public class ParkingService {
 
@@ -19,6 +22,11 @@ public class ParkingService {
         this.pr = pr;
     }
 
+    /**
+     * Get all parkings in db
+     * @return List of parkings
+     * @see Parking
+     */
     public List<Parking> getAll() {
         return pr.findAll();
     }
@@ -39,6 +47,12 @@ public class ParkingService {
         return add(parking);
     }
 
+    /**
+     * Add new parking if similar does not exist
+     * @param parking
+     * @return Created parking instance if created
+     * @see Parking
+     */
     public Parking add(Parking parking) {
         return pr.insert(parking);
     }
@@ -65,6 +79,16 @@ public class ParkingService {
 
     }
 */
+
+    /**
+     * Get all parkings from given area
+     * @param longitude of center of the area
+     * @param latitude of center of the area
+     * @param distance from center
+     * @return list of parkings
+     * @see Parking
+     * @see Circle
+     */
     public List<Parking> getFreeWithinLocation(double longitude, double latitude, double distance) {
         //double earthDist = distance/6371;
         Circle circle = new Circle(longitude, latitude, 5);

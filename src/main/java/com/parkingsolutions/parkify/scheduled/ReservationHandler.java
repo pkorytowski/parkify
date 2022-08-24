@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Schedule service for cancelling expired reservations
+ */
 @Component
 @EnableScheduling
 @EnableAsync
@@ -30,6 +33,9 @@ public class ReservationHandler {
         this.pr = pr;
     }
 
+    /**
+     * Gets all expired reservations and cancel them
+     */
     @Scheduled(fixedRate = 5000)
     @Async
     public void cancelReservations() {

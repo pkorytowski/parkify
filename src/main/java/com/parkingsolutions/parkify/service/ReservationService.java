@@ -21,12 +21,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Class that implements logic for Reservation operations
+ */
 @Component
 public class ReservationService {
     private final ReservationRepository rp;
     private final ParkingRepository pr;
     private final UserRepository ur;
-
+    /**
+     * Default amount of time for extending reservation and occupation
+     */
     private final int DEFAULT_RESERVATION_EXTEND_TIME = 15;
 
     @Autowired
@@ -36,14 +41,33 @@ public class ReservationService {
         this.ur  = ur;
     }
 
+    /**
+     * Get all reservations from db
+     * @return List of reservations
+     * @see Reservation
+     */
     public List<Reservation> getAll() {
         return rp.findAll();
     }
 
+    /**
+     * Get all reservations belonging to user
+     * @param id
+     * @return List of reservations
+     * @see Reservation
+     */
     public List<Reservation> getAllByUserId(String id) {
         return rp.findAllByUserId(id);
     }
 
+    /**
+     * Get all reservations with given status belonging to user
+     * @param id
+     * @param reservationStatus
+     * @return List of reservations
+     * @see Reservation
+     * @see ReservationStatus
+     */
     public List<Reservation> getAllByUserIdAndReservationStatusEquals(String id, ReservationStatus reservationStatus) {
         return rp.findAllByUserIdAndReservationStatusEquals(id, reservationStatus);
     }
@@ -53,6 +77,13 @@ public class ReservationService {
         return rp.findAllByParkingId(id);
     }
 */
+
+    /**
+     * Get full reservations belonging to user
+     * @param id
+     * @return List of reservations with full information
+     * @see ReservationFull
+     */
     public List<ReservationFull> getFullReservationsByUserId(String id) {
         List<Reservation> reservations = getAllByUserId(id);
         List<ReservationFull> reservationFullList = new ArrayList<>();
@@ -63,7 +94,14 @@ public class ReservationService {
         return reservationFullList;
     }
 
-    public List<ReservationFull> getFullReservationsByUserIdAndReservationStatusEqualsReserved(String id) {
+    /**
+     * Get full reservations with status "RESERVED" belonging to user
+     * @param id
+     * @return List of reservations with full information
+     * @see ReservationFull
+     * @see ReservationStatus
+     */
+    private List<ReservationFull> getFullReservationsByUserIdAndReservationStatusEqualsReserved(String id) {
         List<Reservation> reservations = getAllByUserIdAndReservationStatusEquals(id, ReservationStatus.RESERVED);
         List<ReservationFull> reservationFullList = new ArrayList<>();
         for (Reservation reservation: reservations) {
@@ -72,7 +110,7 @@ public class ReservationService {
         }
         return reservationFullList;
     }
-
+/*
     public List<ReservationFull> getOneActiveFullReservationByUserId(String id) {
         List<ReservationFull> activeReservations = getActiveFullReservationsByUserId(id);
         System.out.println(activeReservations);
@@ -82,8 +120,16 @@ public class ReservationService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Incorrect number of active reservations");
         }
     }
+ */
 
-    public List<ReservationFull> getFullReservationsByUserIdAndReservationStatusEqualsOccupied(String id) {
+    /**
+     * Get full reservations with status "OCCUPIED" belonging to user
+     * @param id
+     * @return List of reservations with full information
+     * @see ReservationFull
+     * @see ReservationStatus
+     */
+    private List<ReservationFull> getFullReservationsByUserIdAndReservationStatusEqualsOccupied(String id) {
         List<Reservation> reservations = getAllByUserIdAndReservationStatusEquals(id, ReservationStatus.OCCUPIED);
         List<ReservationFull> reservationFullList = new ArrayList<>();
         for (Reservation reservation: reservations) {
@@ -93,6 +139,13 @@ public class ReservationService {
         return reservationFullList;
     }
 
+    /**
+     * Get all active full reservations. Active means that they have status RESERVED or OCCUPIED
+     * @param id of user
+     * @return List of reservations with full information
+     *      * @see ReservationFull
+     *      * @see ReservationStatus
+     */
     public List<ReservationFull> getActiveFullReservationsByUserId(String id) {
         List<ReservationFull> reservedReservations = getFullReservationsByUserIdAndReservationStatusEqualsReserved(id);
         List<ReservationFull> occupiedReservations = getFullReservationsByUserIdAndReservationStatusEqualsOccupied(id);
@@ -106,6 +159,14 @@ public class ReservationService {
         return rp.findFirstById(id);
     }
 */
+
+    /**
+     * Method that creates new reservation
+     * @param reservation
+     * @param id
+     * @return Reservation instance if created
+     * @see Reservation
+     */
     @Transactional
     public Reservation save(Reservation reservation, String id) {
         List<Reservation> alreadyReserved = rp.findAllByUserIdAndReservationStatusEquals(id, ReservationStatus.RESERVED);
@@ -170,6 +231,12 @@ public class ReservationService {
 
  */
 
+    /**
+     * Change status of the reservation
+     * @param reservationOld
+     * @param reservationNew
+     * @return
+     */
     private Reservation changeReservationStatus(Reservation reservationOld, Reservation reservationNew) {
         LocalDateTime date = LocalDateTime.now();
         if (reservationOld.getReservationStatus().equals(ReservationStatus.RESERVED) &&
@@ -188,6 +255,12 @@ public class ReservationService {
         return rp.save(reservationNew);
     }
 
+    /**
+     * Change reservation status from RESERVED to OCCUPIED
+     * @param id
+     * @param dateStr Expected occupation end
+     * @see ReservationStatus
+     */
     public void occupySpot(String id, String dateStr) {
         Reservation reservation = rp.findFirstById(id);
         if (reservation.getReservationStatus() == ReservationStatus.RESERVED) {
@@ -204,6 +277,12 @@ public class ReservationService {
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST);    }
 
+    /**
+     * Change reservation status
+     * @param id
+     * @param reservationStatus
+     * @return
+     */
     public boolean changeReservationStatus(String id, ReservationStatus reservationStatus) {
         Reservation reservationOld = rp.findFirstById(id);
         Reservation reservationNew = new Reservation(reservationOld);
@@ -213,6 +292,13 @@ public class ReservationService {
     }
 
     //todo validation
+
+    /**
+     * Extend time of reservation
+     * @param id
+     * @see Reservation
+     * @see ReservationService#DEFAULT_RESERVATION_EXTEND_TIME
+     */
     public void extendReservation(String id) {
         Reservation reservation = rp.findFirstById(id);
         if (reservation.getReservationStatus() == ReservationStatus.RESERVED) {
@@ -226,6 +312,12 @@ public class ReservationService {
         }
     }
 
+    /**
+     * End reservation
+     * @param id
+     * @see Reservation
+     * @see ReservationStatus
+     */
     @Transactional
     public void endReservation(String id) {
         Reservation reservation =  rp.findFirstById(id);
@@ -249,6 +341,12 @@ public class ReservationService {
         }
     }
 
+    /**
+     * Cancel reservation
+     * @param id
+     * @see Reservation
+     * @see ReservationStatus
+     */
     public void cancelReservation(String id) {
         Reservation reservation =  rp.findFirstById(id);
         Parking parking = pr.findOneById(reservation.getParkingId());

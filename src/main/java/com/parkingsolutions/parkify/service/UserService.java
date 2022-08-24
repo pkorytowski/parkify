@@ -9,6 +9,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * Class that implements logic for User operations
+ */
 @Component
 public class UserService {
 
@@ -23,6 +26,13 @@ public class UserService {
         return ur.findAll();
     }
 */
+
+    /**
+     * Add new user with distinct email
+     * @param user
+     * @return User if created
+     * @see User
+     */
     public User addUser(User user) {
         User newUser;
         try {
@@ -40,11 +50,17 @@ public class UserService {
         return ur.findOneById(id);
     }
 */
+
+    /**
+     * Get User by email
+     * @param email
+     * @return User if exists
+     * @see User
+     */
     public User getUserByEmail(String email) {
         User user = ur.findOneByEmail(email);
         user.setPassword(null);
         return user;
     }
-
 
 }
