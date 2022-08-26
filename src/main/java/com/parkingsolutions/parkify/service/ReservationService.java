@@ -8,10 +8,13 @@ import com.parkingsolutions.parkify.document.User;
 import com.parkingsolutions.parkify.repository.ParkingRepository;
 import com.parkingsolutions.parkify.repository.ReservationRepository;
 import com.parkingsolutions.parkify.repository.UserRepository;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -26,6 +29,9 @@ import java.util.stream.Stream;
  */
 @Component
 public class ReservationService {
+
+    private String SECRET = "mySecretKey";
+    private String PREFIX = "Parkify ";
     private final ReservationRepository rp;
     private final ParkingRepository pr;
     private final UserRepository ur;
@@ -110,7 +116,7 @@ public class ReservationService {
         }
         return reservationFullList;
     }
-/*
+
     public List<ReservationFull> getOneActiveFullReservationByUserId(String id) {
         List<ReservationFull> activeReservations = getActiveFullReservationsByUserId(id);
         System.out.println(activeReservations);
@@ -120,7 +126,7 @@ public class ReservationService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Incorrect number of active reservations");
         }
     }
- */
+
 
     /**
      * Get full reservations with status "OCCUPIED" belonging to user
@@ -359,6 +365,18 @@ public class ReservationService {
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public void deleteAllReservations(@RequestHeader(name = "Authorization") String token) {
+        String user = Jwts.parser()
+                .setSigningKey(SECRET.getBytes())
+                .parseClaimsJws(token.replace(PREFIX, ""))
+                .getBody()
+                .getSubject();
+
+
+
+        rp.deleteAllByUserId(user);
     }
 
 }

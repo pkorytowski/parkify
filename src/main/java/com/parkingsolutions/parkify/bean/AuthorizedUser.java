@@ -16,9 +16,18 @@ public class AuthorizedUser extends User implements Serializable {
      */
     private String token;
 
-    @JsonCreator
-    public AuthorizedUser(User user, @JsonProperty("token") String token) {
+
+    public AuthorizedUser(User user, String token) {
         super(user);
+        this.token = token;
+    }
+    @JsonCreator
+    public AuthorizedUser(@JsonProperty("name") String name,
+                          @JsonProperty("surname") String surname,
+                          @JsonProperty("email") String email,
+                          @JsonProperty("password") String password,
+                          @JsonProperty("token") String token) {
+        super(name, surname, email, password);
         this.token = token;
     }
 

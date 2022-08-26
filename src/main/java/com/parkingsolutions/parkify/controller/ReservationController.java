@@ -21,8 +21,8 @@ import java.util.Map;
 public class ReservationController {
     private final ReservationService rs;
 
-    private String SECRET = "mySecretKey";
-    private String PREFIX = "Parkify ";
+    private final String SECRET = "mySecretKey";
+    private final String PREFIX = "Parkify ";
 
     @Autowired
     public ReservationController(ReservationService rs) {
@@ -96,7 +96,7 @@ public class ReservationController {
         return rs.getActiveFullReservationsByUserId(user);
     }
 
-    /*
+
     @GetMapping
     public List<ReservationFull> getReservation(@RequestHeader (name = "Authorization") String token) {
         String user = Jwts.parser()
@@ -107,7 +107,7 @@ public class ReservationController {
         return rs.getOneActiveFullReservationByUserId(user);
     }
 
-     */
+
 
     /**
      * Extend reservation

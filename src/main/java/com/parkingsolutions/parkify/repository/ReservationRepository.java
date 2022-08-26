@@ -83,4 +83,5 @@ public interface ReservationRepository extends MongoRepository<Reservation, Stri
     List<Reservation> findAllByReservationStatusEqualsAndReservationEndIsBefore(ReservationStatus status,
                                                                                LocalDateTime date);
 
+    void deleteAllByUserId(String id);
 }
