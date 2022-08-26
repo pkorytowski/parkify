@@ -4,11 +4,7 @@ import com.parkingsolutions.parkify.document.User;
 import com.parkingsolutions.parkify.service.UserService;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("user")
@@ -18,6 +14,7 @@ public class UserController {
 
     private String SECRET = "mySecretKey";
     private String PREFIX = "Parkify ";
+
     @Autowired
     public UserController(UserService us) {
         this.us = us;

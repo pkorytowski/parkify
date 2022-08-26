@@ -1,10 +1,10 @@
 package com.parkingsolutions.parkify.service;
 
 import com.parkingsolutions.parkify.document.Parking;
+import com.parkingsolutions.parkify.document.Point;
 import com.parkingsolutions.parkify.repository.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Circle;
-import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.geo.Sphere;
 import org.springframework.stereotype.Component;
 

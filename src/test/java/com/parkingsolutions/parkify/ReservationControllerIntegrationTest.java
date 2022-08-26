@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.parkingsolutions.parkify.bean.AuthorizedUser;
 import com.parkingsolutions.parkify.common.ReservationStatus;
 import com.parkingsolutions.parkify.document.Parking;
+import com.parkingsolutions.parkify.document.Point;
 import com.parkingsolutions.parkify.document.Reservation;
 import com.parkingsolutions.parkify.service.ParkingService;
 import com.parkingsolutions.parkify.service.ReservationService;
@@ -16,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.data.geo.Point;
 import org.springframework.http.*;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -81,7 +79,7 @@ public class ReservationControllerIntegrationTest {
         setUpParkingsInDb();
     }
 
-    public void setUpParkingsInDb() {
+    private void setUpParkingsInDb() {
         List<Parking> parkings = new ArrayList<>();
             parkings.add(new Parking(
                     "6280d84995e1e9d7f1350141",

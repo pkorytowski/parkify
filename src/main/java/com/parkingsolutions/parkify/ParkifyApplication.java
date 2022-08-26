@@ -1,15 +1,20 @@
 package com.parkingsolutions.parkify;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
 import com.parkingsolutions.parkify.auth.JWTAuthorizationFilter;
+import com.parkingsolutions.parkify.mongo.converter.PointReadConverter;
+import com.parkingsolutions.parkify.mongo.converter.PointWriteConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -92,7 +97,29 @@ public class ParkifyApplication {
 
     @EnableMongoRepositories("com.parkingsolutions.parkify.repository")
     @Configuration
-    class MongoConfiguration {
+    class MongoConfiguration extends AbstractMongoClientConfiguration {
+
+        @Value("${spring.data.mongodb.uri}")
+        private String mongoUri;
+
+        @Value("${spring.data.mongodb.database}")
+        private String database;
+
+        @Override
+        protected String getDatabaseName() {
+            return database;
+        }
+
+        @Override
+        protected void configureClientSettings(MongoClientSettings.Builder builder) {
+            builder.applyConnectionString(new ConnectionString(mongoUri));
+        }
+
+        @Override
+        protected void configureConverters(MongoCustomConversions.MongoConverterConfigurationAdapter adapter) {
+            adapter.registerConverter(new PointReadConverter());
+            adapter.registerConverter(new PointWriteConverter());
+        }
 
     }
 
@@ -108,4 +135,5 @@ public class ParkifyApplication {
                     .build();
         }
     }
+
 }

@@ -2,9 +2,7 @@ package com.parkingsolutions.parkify.document;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.parkingsolutions.parkify.bean.Location;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
