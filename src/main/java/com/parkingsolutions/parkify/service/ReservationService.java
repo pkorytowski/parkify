@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -311,8 +310,15 @@ public class ReservationService {
             reservation.setReservationEnd(reservation.getReservationEnd().plusMinutes(DEFAULT_RESERVATION_EXTEND_TIME));
             rp.save(reservation);
         } else if (reservation.getReservationStatus() == ReservationStatus.OCCUPIED) {
-            reservation.setOccupationEnd(reservation.getOccupationEnd().plusMinutes(DEFAULT_RESERVATION_EXTEND_TIME));
-            rp.save(reservation);
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime occupationEnd = reservation.getOccupationEnd();
+            if (now.isBefore(occupationEnd)) {
+                reservation.setOccupationEnd(reservation.getOccupationEnd().plusMinutes(DEFAULT_RESERVATION_EXTEND_TIME));
+                rp.save(reservation);
+            } else {
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
