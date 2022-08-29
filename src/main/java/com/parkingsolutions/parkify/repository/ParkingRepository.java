@@ -1,7 +1,6 @@
 package com.parkingsolutions.parkify.repository;
 
 import com.parkingsolutions.parkify.document.Parking;
-import org.springframework.data.geo.Circle;
 import org.springframework.data.mongodb.core.geo.Sphere;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -82,5 +81,5 @@ public interface ParkingRepository extends MongoRepository<Parking, String> {
      * @return list of parking matching criteria
      * @see Parking
      */
-    List<Parking> findAllByLocationIsWithinAndAvailableSpotsIsGreaterThan(Sphere location, int number);
+    List<Parking> findAllByLocationIsWithinAndAvailableSpotsIsGreaterThanOrderByLocationAsc(Sphere location, int number);
 }

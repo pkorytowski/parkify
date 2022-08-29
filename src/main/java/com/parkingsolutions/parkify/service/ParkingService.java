@@ -93,7 +93,7 @@ public class ParkingService {
     public List<Parking> getFreeWithinLocation(double longitude, double latitude, double distance) {
         double earthDist = distance/6371.0;
         Sphere sphere = new Sphere(new Circle(longitude, latitude, earthDist));
-        return pr.findAllByLocationIsWithinAndAvailableSpotsIsGreaterThan(sphere, 0);
+        return pr.findAllByLocationIsWithinAndAvailableSpotsIsGreaterThanOrderByLocationAsc(sphere, 0);
     }
 
 }
