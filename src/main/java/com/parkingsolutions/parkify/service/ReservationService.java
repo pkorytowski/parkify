@@ -188,6 +188,8 @@ public class ReservationService {
             reservation.setReservationStatus(ReservationStatus.RESERVED);
             reservation.setReservationStart(LocalDateTime.now());
             reservation.setReservationEnd(LocalDateTime.now().plusMinutes(DEFAULT_RESERVATION_EXTEND_TIME));
+            reservation.setReservationExtendTimes(0);
+            reservation.setOccupationExtendTimes(0);
         }
         boolean result = parking.reserveSpot();
         if (!result) {
@@ -307,18 +309,27 @@ public class ReservationService {
     public void extendReservation(String id) {
         Reservation reservation = rp.findFirstById(id);
         if (reservation.getReservationStatus() == ReservationStatus.RESERVED) {
-            reservation.setReservationEnd(reservation.getReservationEnd().plusMinutes(DEFAULT_RESERVATION_EXTEND_TIME));
-            rp.save(reservation);
+            if (reservation.getReservationExtendTimes() < 3) {
+                reservation.setReservationEnd(reservation.getReservationEnd().plusMinutes(DEFAULT_RESERVATION_EXTEND_TIME));
+                reservation.setReservationExtendTimes(reservation.getReservationExtendTimes() + 1);
+                rp.save(reservation);
+            } else {
+                throw new ResponseStatusException(HttpStatus.CONFLICT);
+            }
         } else if (reservation.getReservationStatus() == ReservationStatus.OCCUPIED) {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime occupationEnd = reservation.getOccupationEnd();
-            if (now.isBefore(occupationEnd)) {
-                reservation.setOccupationEnd(reservation.getOccupationEnd().plusMinutes(DEFAULT_RESERVATION_EXTEND_TIME));
-                rp.save(reservation);
+            if (reservation.getOccupationExtendTimes() < 3) {
+                if (now.isBefore(occupationEnd)) {
+                    reservation.setOccupationEnd(reservation.getOccupationEnd().plusMinutes(DEFAULT_RESERVATION_EXTEND_TIME));
+                    reservation.setOccupationExtendTimes(reservation.getOccupationExtendTimes() + 1);
+                    rp.save(reservation);
+                } else {
+                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
+                }
             } else {
-                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
+                throw new ResponseStatusException(HttpStatus.CONFLICT);
             }
-
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }

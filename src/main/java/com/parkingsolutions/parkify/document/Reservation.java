@@ -28,6 +28,10 @@ public class Reservation implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime occupationEnd;
 
+    private int occupationExtendTimes;
+
+    private int reservationExtendTimes;
+
     public Reservation() {}
     public Reservation(String userId,
                        String parkingId,
@@ -35,7 +39,9 @@ public class Reservation implements Serializable {
                        LocalDateTime reservationStart,
                        LocalDateTime reservationEnd,
                        LocalDateTime occupationStart,
-                       LocalDateTime occupationEnd) {
+                       LocalDateTime occupationEnd,
+                       int reservationExtendTimes,
+                       int occupationExtendTimes) {
         this.userId = userId;
         this.parkingId = parkingId;
         this.reservationStatus = reservationStatus;
@@ -43,6 +49,8 @@ public class Reservation implements Serializable {
         this.reservationEnd = reservationEnd;
         this.occupationStart = occupationStart;
         this.occupationEnd = occupationEnd;
+        this.reservationExtendTimes = reservationExtendTimes;
+        this.occupationExtendTimes = occupationExtendTimes;
     }
 
     public Reservation(Reservation reservation) {
@@ -120,4 +128,19 @@ public class Reservation implements Serializable {
         this.occupationEnd = occupationEnd;
     }
 
+    public int getOccupationExtendTimes() {
+        return occupationExtendTimes;
+    }
+
+    public void setOccupationExtendTimes(int occupationExtendTimes) {
+        this.occupationExtendTimes = occupationExtendTimes;
+    }
+
+    public int getReservationExtendTimes() {
+        return reservationExtendTimes;
+    }
+
+    public void setReservationExtendTimes(int reservationExtendTimes) {
+        this.reservationExtendTimes = reservationExtendTimes;
+    }
 }
