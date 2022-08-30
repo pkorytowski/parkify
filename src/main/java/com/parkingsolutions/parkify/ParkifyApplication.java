@@ -38,6 +38,7 @@ public class ParkifyApplication {
 
     @EnableWebSecurity
     //@Profile(value = {"development", "production"})
+    @EnableSwagger2
     @Configuration
     class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
