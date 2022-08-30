@@ -49,6 +49,7 @@ public class ParkifyApplication {
                     //.antMatchers("/**").authenticated()
                     .antMatchers(HttpMethod.POST, "/login/*").permitAll()
                     .antMatchers(HttpMethod.POST, "/register/*").permitAll()
+                    .antMatchers(HttpMethod.GET, "/swagger-ui/*").permitAll()
                     //.antMatchers(HttpMethod.GET, "/reservation/*").authenticated()
                     //.antMatchers(HttpMethod.POST, "/parking/*").permitAll()
                     //.antMatchers(HttpMethod.POST, "/reservation/*").permitAll()
