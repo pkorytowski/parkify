@@ -1,11 +1,9 @@
 package com.parkingsolutions.parkify.controller;
 
-import com.parkingsolutions.parkify.document.Parking;
 import com.parkingsolutions.parkify.service.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Rest controller for CRUD on Parking instances
@@ -20,10 +18,10 @@ public class ParkingController {
         this.ps = ps;
     }
 
-    @GetMapping("/all")
+    /*@GetMapping("/all")
     public List<Parking> getAll() {
         return ps.getAll();
-    }
+    }*/
 
     /*
     @GetMapping("/all/{ownerId}")
@@ -38,10 +36,10 @@ public class ParkingController {
      * @param parking
      * @return Saved instance
      */
-    @PostMapping
+    /*@PostMapping
     public Parking add(@RequestBody Parking parking) {
         return ps.add(parking);
-    }
+    }*/
 
     /*
     @GetMapping("/{id}")
@@ -78,7 +76,7 @@ public class ParkingController {
      * @param distance in kilometres
      * @return List of parking in given area.
      */
-    @GetMapping("find")
+    /*@GetMapping("find")
     public List<Parking> findAllFreeInDistance(@RequestParam("lon") double longitude,
                                                @RequestParam("lat") double latitude,
                                                @RequestParam("distance") double distance) {
@@ -86,10 +84,11 @@ public class ParkingController {
 
 
         return ps.getFreeWithinLocation(longitude, latitude, distance);
-    }
+    }*/
 
-    @PostMapping("specific")
+   /* @PostMapping("specific")
     public Parking addSpecific(){
         return ps.addSpecific();
-    }
+
+    }*/
 }

@@ -27,7 +27,7 @@ public class AdminService {
      * @return list of all owners in db
      * @see Admin
      */
-    public List<Admin> getOwners() {
+    public List<Admin> getAdmins() {
         return or.findAll();
     }
 
@@ -36,7 +36,7 @@ public class AdminService {
      * @param admin
      * @return Owner instance if created
      */
-    public Admin addOwner(Admin admin) {
+    public Admin addAdmin(Admin admin) {
         Admin newAdmin;
         try {
             newAdmin = or.insert(admin);
@@ -54,7 +54,7 @@ public class AdminService {
      * @return Owner is exists
      * @see Admin
      */
-    public Admin getOwnerById(String id) {
+    public Admin getAdminById(String id) {
         return or.findOneById(id);
     }
 
@@ -64,7 +64,7 @@ public class AdminService {
      * @return Owner if exists
      * @see Admin
      */
-    public Admin getOwnerByEmail(String email) {
+    public Admin getAdminByEmail(String email) {
         return or.findOneByEmail(email);
     }
 

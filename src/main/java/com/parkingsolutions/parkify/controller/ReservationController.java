@@ -53,7 +53,8 @@ public class ReservationController {
                 .parseClaimsJws(token.replace(PREFIX, ""))
                 .getBody()
                 .getSubject();
-        return rs.save(reservation, user);
+        //return rs.save(reservation, user);
+        return null;
     }
 
     /*
@@ -78,7 +79,8 @@ public class ReservationController {
                 .getBody()
                 .getSubject();
 
-        return rs.getFullReservationsByUserId(user);
+        //return rs.getFullReservationsByUserId(user);
+        return null;
     }
 
     /**
@@ -93,7 +95,8 @@ public class ReservationController {
                 .parseClaimsJws(token.replace(PREFIX, ""))
                 .getBody()
                 .getSubject();
-        return rs.getActiveFullReservationsByUserId(user);
+        //return rs.getActiveFullReservationsByUserId(user);
+        return null;
     }
 
 
@@ -104,7 +107,8 @@ public class ReservationController {
                 .parseClaimsJws(token.replace(PREFIX, ""))
                 .getBody()
                 .getSubject();
-        return rs.getOneActiveFullReservationByUserId(user);
+        //return rs.getOneActiveFullReservationByUserId(user);
+        return null;
     }
 
 
@@ -117,7 +121,7 @@ public class ReservationController {
     public void extendReservation(@RequestBody Map<String, String> request) {
         String id = request.get("id");
         if (id != null) {
-            rs.extendReservation(id);
+            //rs.extendReservation(id);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -128,7 +132,7 @@ public class ReservationController {
         String id = request.get("id");
         String dateStr = request.get("predictedReservationEnd");
         if (id != null) {
-           rs.occupySpot(id, dateStr);
+           //rs.occupySpot(id, dateStr);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -138,7 +142,7 @@ public class ReservationController {
     public void endReservation(@RequestBody Map<String, String> request) {
         String id = request.get("id");
         if (id != null) {
-            rs.endReservation(id);
+            //rs.endReservation(id);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -148,7 +152,7 @@ public class ReservationController {
     public void cancelReservation(@RequestBody Map<String, String> request) {
         String id = request.get("id");
         if (id != null) {
-            rs.cancelReservation(id);
+            //rs.cancelReservation(id);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -175,7 +179,8 @@ public class ReservationController {
             default:
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        return rs.changeReservationStatus(id, status);
+        //return rs.changeReservationStatus(id, status);
+        return true;
     }
 
 }

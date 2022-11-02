@@ -70,8 +70,7 @@ public class LoginService {
         if (admin != null) {
             if (admin.getPassword().equals(password)) {
                 String token = getJWTToken(email, "OWNER");
-                AuthorizedAdmin authOwner = new AuthorizedAdmin(admin, token);
-                return authOwner;
+                return new AuthorizedAdmin(admin, token);
             } else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
             }

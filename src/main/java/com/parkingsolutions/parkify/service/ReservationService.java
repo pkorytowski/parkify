@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReservationService {
 
-    private String SECRET = "mySecretKey";
-    private String PREFIX = "Parkify ";
     private final ReservationRepository rp;
     private final ParkingRepository pr;
     private final UserRepository ur;

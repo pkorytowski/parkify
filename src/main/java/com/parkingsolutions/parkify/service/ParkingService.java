@@ -1,14 +1,10 @@
 package com.parkingsolutions.parkify.service;
 
 import com.parkingsolutions.parkify.document.Parking;
-import com.parkingsolutions.parkify.document.Point;
 import com.parkingsolutions.parkify.repository.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Circle;
-import org.springframework.data.mongodb.core.geo.Sphere;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * Class that implements logic for Parking operations
@@ -28,11 +24,11 @@ public class ParkingService {
      * @return List of parkings
      * @see Parking
      */
-    public List<Parking> getAll() {
+   /* public List<Parking> getAll() {
         return pr.findAll();
-    }
+    }*/
 
-    public Parking addSpecific() {
+    /*public Parking addSpecific() {
         Parking parking = new Parking(
                 "6280d84995e1e9d7f1350141",
                 "Test Parking",
@@ -46,7 +42,7 @@ public class ParkingService {
         );
 
         return add(parking);
-    }
+    }*/
 
     /**
      * Add new parking if similar does not exist
@@ -54,9 +50,9 @@ public class ParkingService {
      * @return Created parking instance if created
      * @see Parking
      */
-    public Parking add(Parking parking) {
+    /*public Parking add(Parking parking) {
         return pr.insert(parking);
-    }
+    }*/
 /*
     public Parking getOneById(String id) {
         return pr.findOneById(id);
@@ -70,9 +66,9 @@ public class ParkingService {
         return pr.findAllByOwnerId(ownerId);
     }
 */
-    public void deleteOneById(String id) {
+    /*public void deleteOneById(String id) {
         pr.deleteById(id);
-    }
+    }*/
 /*
     public List<Parking> getFreeByCity(String city) {
 
@@ -92,11 +88,11 @@ public class ParkingService {
      * @see Circle
      */
 
-    public List<Parking> getFreeWithinLocation(double longitude, double latitude, double distance) {
+    /*public List<Parking> getFreeWithinLocation(double longitude, double latitude, double distance) {
         double earthDist = distance/6371.0;
         Sphere sphere = new Sphere(new Circle(longitude, latitude, earthDist));
         return pr.findAllByLocationIsWithinAndAvailableSpotsIsGreaterThanOrderByLocationAsc(sphere, 0);
-    }
+    }*/
 
 
 }

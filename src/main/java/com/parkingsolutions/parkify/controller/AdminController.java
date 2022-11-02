@@ -26,21 +26,21 @@ public class AdminController {
 
     @GetMapping("/all")
     public @ResponseBody List<Admin> getOwners() {
-        return os.getOwners();
+        return os.getAdmins();
     }
 
     @PostMapping
     public Admin addUser(@RequestBody Admin admin) {
-        return os.addOwner(admin);
+        return os.addAdmin(admin);
     }
 
     @GetMapping
     public @ResponseBody Admin getUser(@RequestParam(name = "id", required = false) String id,
                                        @RequestParam(name = "email", required = false) String email) {
         if (id != null) {
-            return os.getOwnerById(id);
+            return os.getAdminById(id);
         } else if (email != null) {
-            return os.getOwnerByEmail(email);
+            return os.getAdminByEmail(email);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
