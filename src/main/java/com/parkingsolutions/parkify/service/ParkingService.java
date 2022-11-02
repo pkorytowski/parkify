@@ -79,7 +79,8 @@ public class ParkingService {
         return pr.findAllByCityAndAvailableSpotsIsGreaterThan(city,0);
 
     }
-*/
+
+ */
 
     /**
      * Get all parkings from given area
@@ -90,10 +91,12 @@ public class ParkingService {
      * @see Parking
      * @see Circle
      */
+
     public List<Parking> getFreeWithinLocation(double longitude, double latitude, double distance) {
         double earthDist = distance/6371.0;
         Sphere sphere = new Sphere(new Circle(longitude, latitude, earthDist));
         return pr.findAllByLocationIsWithinAndAvailableSpotsIsGreaterThanOrderByLocationAsc(sphere, 0);
     }
+
 
 }

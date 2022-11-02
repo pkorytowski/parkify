@@ -1,7 +1,7 @@
 package com.parkingsolutions.parkify.service;
 
-import com.parkingsolutions.parkify.document.Owner;
-import com.parkingsolutions.parkify.repository.OwnerRepository;
+import com.parkingsolutions.parkify.document.Admin;
+import com.parkingsolutions.parkify.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -13,48 +13,48 @@ import java.util.List;
  * Class that implements logic for owner operations
  */
 @Component
-public class OwnerService {
+public class AdminService {
 
-    private OwnerRepository or;
+    private AdminRepository or;
 
     @Autowired
-    public OwnerService(OwnerRepository or) {
+    public AdminService(AdminRepository or) {
         this.or = or;
     }
 
     /**
      * Get all owners
      * @return list of all owners in db
-     * @see Owner
+     * @see Admin
      */
-    public List<Owner> getOwners() {
+    public List<Admin> getOwners() {
         return or.findAll();
     }
 
     /**
      * Add new owner with distinct email
-     * @param owner
+     * @param admin
      * @return Owner instance if created
      */
-    public Owner addOwner(Owner owner) {
-        Owner newOwner;
+    public Admin addOwner(Admin admin) {
+        Admin newAdmin;
         try {
-            newOwner = or.insert(owner);
+            newAdmin = or.insert(admin);
         } catch (Exception e) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, "User already exist"
             );
         }
-        return newOwner;
+        return newAdmin;
     }
 
     /**
      * Get owner by id
      * @param id
      * @return Owner is exists
-     * @see Owner
+     * @see Admin
      */
-    public Owner getOwnerById(String id) {
+    public Admin getOwnerById(String id) {
         return or.findOneById(id);
     }
 
@@ -62,9 +62,9 @@ public class OwnerService {
      * Get owner by email
      * @param email
      * @return Owner if exists
-     * @see Owner
+     * @see Admin
      */
-    public Owner getOwnerByEmail(String email) {
+    public Admin getOwnerByEmail(String email) {
         return or.findOneByEmail(email);
     }
 

@@ -1,7 +1,7 @@
 package com.parkingsolutions.parkify.controller;
 
-import com.parkingsolutions.parkify.document.Owner;
-import com.parkingsolutions.parkify.service.OwnerService;
+import com.parkingsolutions.parkify.document.Admin;
+import com.parkingsolutions.parkify.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,28 +15,28 @@ import java.util.List;
  */
 @RestController()
 @RequestMapping("owner")
-public class OwnerController {
+public class AdminController {
 
-    private final OwnerService os;
+    private final AdminService os;
 
     @Autowired
-    public OwnerController(OwnerService os) {
+    public AdminController(AdminService os) {
         this.os = os;
     }
 
     @GetMapping("/all")
-    public @ResponseBody List<Owner> getOwners() {
+    public @ResponseBody List<Admin> getOwners() {
         return os.getOwners();
     }
 
     @PostMapping
-    public Owner addUser(@RequestBody Owner owner) {
-        return os.addOwner(owner);
+    public Admin addUser(@RequestBody Admin admin) {
+        return os.addOwner(admin);
     }
 
     @GetMapping
-    public @ResponseBody Owner getUser(@RequestParam(name = "id", required = false) String id,
-                                      @RequestParam(name = "email", required = false) String email) {
+    public @ResponseBody Admin getUser(@RequestParam(name = "id", required = false) String id,
+                                       @RequestParam(name = "email", required = false) String email) {
         if (id != null) {
             return os.getOwnerById(id);
         } else if (email != null) {

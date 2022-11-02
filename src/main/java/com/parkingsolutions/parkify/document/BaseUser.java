@@ -1,5 +1,6 @@
 package com.parkingsolutions.parkify.document;
 
+import com.parkingsolutions.parkify.common.Role;
 import org.springframework.data.annotation.Id;
 
 /**
@@ -13,14 +14,16 @@ public class BaseUser {
     private String surname;
     private String email;
     private String password;
+    private Role role;
 
     public BaseUser() {}
 
-    public BaseUser(String name, String surname, String email, String password) {
+    public BaseUser(String name, String surname, String email, String password, Role role) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public String getId() {
@@ -63,4 +66,11 @@ public class BaseUser {
         this.password = password;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

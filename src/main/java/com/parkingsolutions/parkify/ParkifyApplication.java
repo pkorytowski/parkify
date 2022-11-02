@@ -1,23 +1,14 @@
 package com.parkingsolutions.parkify;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.parkingsolutions.parkify.auth.JWTAuthorizationFilter;
-import com.parkingsolutions.parkify.mongo.converter.PointReadConverter;
-import com.parkingsolutions.parkify.mongo.converter.PointWriteConverter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
-import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -29,6 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Arrays;
 
+@EnableMongoRepositories
 @SpringBootApplication
 public class ParkifyApplication {
 
@@ -37,7 +29,6 @@ public class ParkifyApplication {
     }
 
     @EnableWebSecurity
-    //@Profile(value = {"development", "production"})
     @EnableSwagger2
     @Configuration
     class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -45,39 +36,20 @@ public class ParkifyApplication {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.cors().and().csrf().disable()
-                    .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                    //.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
                     //.antMatchers("/**").authenticated()
-                    .antMatchers(HttpMethod.POST, "/login/*").permitAll()
-                    .antMatchers(HttpMethod.POST, "/register/*").permitAll()
-                    .antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
-                    .antMatchers(HttpMethod.GET, "/swagger-resources/**").permitAll()
-                    .antMatchers(HttpMethod.GET, "/v2/**").permitAll()
-                    .antMatchers(HttpMethod.GET, "/webjars/**").permitAll()
+                    //.antMatchers(HttpMethod.POST, "/login/*").permitAll()
+                    //.antMatchers(HttpMethod.POST, "/register/*").permitAll()
+                    //.antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
+                    //.antMatchers(HttpMethod.GET, "/swagger-resources/**").permitAll()
+                    //.antMatchers(HttpMethod.GET, "/v2/**").permitAll()
+                    //.antMatchers(HttpMethod.GET, "/webjars/**").permitAll()
                     //.antMatchers(HttpMethod.GET, "/reservation/*").authenticated()
                     //.antMatchers(HttpMethod.POST, "/parking/*").permitAll()
                     //.antMatchers(HttpMethod.POST, "/reservation/*").permitAll()
                     .anyRequest().authenticated();
-
-            //http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
-            /*
-                    .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-                    .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/login/*").permitAll()
-                    .antMatchers(HttpMethod.POST, "/register/*").permitAll()
-                    .antMatchers(HttpMethod.POST, "/parking/*").permitAll()
-                    .antMatchers(HttpMethod.POST, "/reservation/*").permitAll()
-                    .anyRequest().authenticated();
-
-             */
         }
-/*
-        @Override
-        public void configure(WebSecurity webSecurity) {
-            webSecurity.ignoring().antMatchers("/login/user");
-        }
-
- */
 
         @Bean
         CorsConfigurationSource corsConfigurationSource() {
@@ -100,6 +72,7 @@ public class ParkifyApplication {
         }
     }
 
+    /*
     @EnableMongoRepositories("com.parkingsolutions.parkify.repository")
     @Configuration
     class MongoConfiguration extends AbstractMongoClientConfiguration {
@@ -127,6 +100,7 @@ public class ParkifyApplication {
         }
 
     }
+     */
 
     @EnableSwagger2
     @Configuration

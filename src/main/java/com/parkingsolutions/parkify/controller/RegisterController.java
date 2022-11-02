@@ -1,7 +1,7 @@
 package com.parkingsolutions.parkify.controller;
 
 import com.parkingsolutions.parkify.document.User;
-import com.parkingsolutions.parkify.service.OwnerService;
+import com.parkingsolutions.parkify.service.AdminService;
 import com.parkingsolutions.parkify.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("register")
 public class RegisterController {
     private UserService us;
-    private OwnerService os;
+    private AdminService os;
 
     @Autowired
-    public RegisterController(UserService us, OwnerService os) {
+    public RegisterController(UserService us, AdminService os) {
         this.us = us;
         this.os = os;
     }

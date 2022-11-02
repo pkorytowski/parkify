@@ -1,0 +1,45 @@
+
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'org.springframework.boot' version '2.7.5'
+}
+
+ext {
+    springBootVersion = '2.7.5'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation libs.spring.boot.starter.data.mongodb
+    implementation libs.spring.boot.starter.web
+    implementation libs.spring.boot.starter.security
+    implementation libs.jjwt
+    implementation libs.jackson.databind
+    implementation libs.jackson.datatype.jsr310
+    implementation libs.jaxb.api
+    implementation libs.springfox.boot.starter
+    testImplementation libs.spring.boot.starter.test
+    testImplementation libs.reactor.test
+}
+
+group = 'com.parkingsolutions'
+version = '0.0.1-SNAPSHOT'
+description = 'parkify'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

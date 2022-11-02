@@ -1,21 +1,15 @@
 package com.parkingsolutions.parkify.controller;
 
 
-import com.parkingsolutions.parkify.bean.AuthorizedOwner;
+import com.parkingsolutions.parkify.bean.AuthorizedAdmin;
 import com.parkingsolutions.parkify.bean.AuthorizedUser;
-import com.parkingsolutions.parkify.document.User;
 import com.parkingsolutions.parkify.service.LoginService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,7 +34,7 @@ public class LoginController {
     }
 
     @PostMapping("owner")
-    public AuthorizedOwner loginOwner(@RequestBody Map<String, String> request) {
+    public AuthorizedAdmin loginOwner(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String password = request.get("password");
         return ls.loginOwner(email, password);

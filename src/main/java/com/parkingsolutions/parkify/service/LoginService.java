@@ -1,11 +1,11 @@
 package com.parkingsolutions.parkify.service;
 
 
-import com.parkingsolutions.parkify.bean.AuthorizedOwner;
+import com.parkingsolutions.parkify.bean.AuthorizedAdmin;
 import com.parkingsolutions.parkify.bean.AuthorizedUser;
-import com.parkingsolutions.parkify.document.Owner;
+import com.parkingsolutions.parkify.document.Admin;
 import com.parkingsolutions.parkify.document.User;
-import com.parkingsolutions.parkify.repository.OwnerRepository;
+import com.parkingsolutions.parkify.repository.AdminRepository;
 import com.parkingsolutions.parkify.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,10 +27,10 @@ import java.util.stream.Collectors;
 public class LoginService {
 
     private UserRepository ur;
-    private OwnerRepository or;
+    private AdminRepository or;
 
     @Autowired
-    public LoginService(UserRepository ur, OwnerRepository or) {
+    public LoginService(UserRepository ur, AdminRepository or) {
         this.ur = ur;
         this.or = or;
     }
@@ -65,12 +65,12 @@ public class LoginService {
      * @return Instance of authorized user
      * @see AuthorizedUser
      */
-    public AuthorizedOwner loginOwner(String email, String password) {
-        Owner owner = or.findOneByEmail(email);
-        if (owner != null) {
-            if (owner.getPassword().equals(password)) {
+    public AuthorizedAdmin loginOwner(String email, String password) {
+        Admin admin = or.findOneByEmail(email);
+        if (admin != null) {
+            if (admin.getPassword().equals(password)) {
                 String token = getJWTToken(email, "OWNER");
-                AuthorizedOwner authOwner = new AuthorizedOwner(owner, token);
+                AuthorizedAdmin authOwner = new AuthorizedAdmin(admin, token);
                 return authOwner;
             } else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
