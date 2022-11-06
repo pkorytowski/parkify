@@ -65,7 +65,7 @@ public class LoginService {
      * @return Instance of authorized user
      * @see AuthorizedUser
      */
-    public AuthorizedAdmin loginOwner(String email, String password) {
+    public AuthorizedAdmin loginAdmin(String email, String password) {
         Admin admin = or.findOneByEmail(email);
         if (admin != null) {
             if (admin.getPassword().equals(password)) {

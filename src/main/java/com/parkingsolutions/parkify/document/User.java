@@ -3,20 +3,22 @@ package com.parkingsolutions.parkify.document;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.parkingsolutions.parkify.common.Role;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Class for ordinary user without special permission
  */
 @Document("user")
+@NoArgsConstructor
+@Data
 public class User extends BaseUser{
 
     /**
      * If user ends occupation of parking spot before declared time the rank is increased, otherwise is decreased.
      */
     private int rank;
-
-    public User() {}
 
     public User(User user) {
         this(user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getRank());
@@ -43,14 +45,6 @@ public class User extends BaseUser{
                 @JsonProperty("password") String password) {
         super(name, surname, email, password, Role.USER);
         this.rank = 0;
-    }
-
-    public int getRank() {
-        return rank;
-    }
-
-    public void setRank(int rank) {
-        this.rank = rank;
     }
 
     public void increaseRank() {

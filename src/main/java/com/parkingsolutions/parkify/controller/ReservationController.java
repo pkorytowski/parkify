@@ -1,6 +1,5 @@
 package com.parkingsolutions.parkify.controller;
 
-import com.parkingsolutions.parkify.bean.ReservationFull;
 import com.parkingsolutions.parkify.common.ReservationStatus;
 import com.parkingsolutions.parkify.document.Reservation;
 import com.parkingsolutions.parkify.service.ReservationService;
@@ -66,42 +65,14 @@ public class ReservationController {
      */
 
     /**
-     * Get all reservation with full information for given user
-     * @param token authorization token
-     * @return List of ReservationFull
-     * @see ReservationFull
-     */
-    @GetMapping("full")
-    public List<ReservationFull> getFullReservationsByUserId(@RequestHeader (name = "Authorization") String token) {
-        String user = Jwts.parser()
-                .setSigningKey(SECRET.getBytes())
-                .parseClaimsJws(token.replace(PREFIX, ""))
-                .getBody()
-                .getSubject();
-
-        //return rs.getFullReservationsByUserId(user);
-        return null;
-    }
-
-    /**
      * Get active reservation for user. It is possible to have only one active reservation at the time. It is a workaround for client app
      * @param token authorization token
      * @return Empty list when there is no active reservations. List with length otherwise
      */
-    @GetMapping("active")
-    public List<ReservationFull> getActiveFullReservationByUserId(@RequestHeader (name = "Authorization") String token) {
-        String user = Jwts.parser()
-                .setSigningKey(SECRET.getBytes())
-                .parseClaimsJws(token.replace(PREFIX, ""))
-                .getBody()
-                .getSubject();
-        //return rs.getActiveFullReservationsByUserId(user);
-        return null;
-    }
 
 
     @GetMapping
-    public List<ReservationFull> getReservation(@RequestHeader (name = "Authorization") String token) {
+    public List<Reservation> getReservation(@RequestHeader (name = "Authorization") String token) {
         String user = Jwts.parser()
                 .setSigningKey(SECRET.getBytes())
                 .parseClaimsJws(token.replace(PREFIX, ""))

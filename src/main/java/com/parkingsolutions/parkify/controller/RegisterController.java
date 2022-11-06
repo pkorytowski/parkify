@@ -29,11 +29,4 @@ public class RegisterController {
         return us.addUser(user);
     }
 
-    /*
-    @PostMapping("owner")
-    public Owner registerOwner(@RequestBody Owner owner) {
-        return os.addOwner(owner);
-    }
-
-     */
 }

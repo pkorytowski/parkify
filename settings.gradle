@@ -13,6 +13,7 @@ dependencyResolutionManagement {
             library("jjwt", "io.jsonwebtoken:jjwt:0.9.1");
             library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:2.13.3");
             library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3");
+            library("lombok", "org.projectlombok:lombok:1.18.24");
             library("jaxb-api", "javax.xml.bind:jaxb-api:2.3.0");
             library("springfox-boot-starter", "io.springfox:springfox-boot-starter:3.0.0");
             library("spring-boot-starter-test", "org.springframework.boot:spring-boot-starter-test:2.6.7");

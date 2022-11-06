@@ -1,12 +1,14 @@
 package com.parkingsolutions.parkify.document;
 
 import com.parkingsolutions.parkify.common.Role;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Class created for the parkings' owners. Owner functionality non implemented.
  */
 @Document("owner")
+@NoArgsConstructor
 public class Admin extends BaseUser {
 
     public Admin(String name, String surname, String email, String password) {

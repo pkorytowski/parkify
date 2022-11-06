@@ -25,7 +25,7 @@ public class AdminController {
     }
 
     @GetMapping("/all")
-    public @ResponseBody List<Admin> getOwners() {
+    public @ResponseBody List<Admin> getAdmins() {
         return os.getAdmins();
     }
 

@@ -37,7 +37,7 @@ public class LoginController {
     public AuthorizedAdmin loginOwner(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String password = request.get("password");
-        return ls.loginOwner(email, password);
+        return ls.loginAdmin(email, password);
     }
 
 
